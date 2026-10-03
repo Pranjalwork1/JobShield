@@ -1,0 +1,5 @@
+{
+  "buildCommand": "npm --prefix jobshield run build",
+  "installCommand": "npm --prefix jobshield install",
+  "framework": "nextjs"
+}

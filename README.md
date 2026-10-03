@@ -7,6 +7,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald?style=for-the-badge)](LICENSE)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FPranjalwork1%2FJobShield&root-directory=jobshield&env=GEMINI_API_KEY,GEMINI_MODEL&envDescription=Your%20Google%20Gemini%20API%20Key%20from%20Google%20AI%20Studio&envLink=https%3A%2F%2Faistudio.google.com%2Fapikey&project-name=jobshield)
 
 ---
 
@@ -213,6 +214,28 @@ npm run lint
 # Production build
 npm run build
 ```
+
+---
+
+## 🌐 One-Click Cloud Deployment (Vercel)
+
+JobShield runs seamlessly on **[Vercel](https://vercel.com)** with native serverless support for Next.js 16 and Google Gemini 3.8 Flash multimodal processing.
+
+### Option 1: One-Click Deploy Button
+Click the badge below to clone and deploy with automatic configuration:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FPranjalwork1%2FJobShield&root-directory=jobshield&env=GEMINI_API_KEY,GEMINI_MODEL&envDescription=Your%20Google%20Gemini%20API%20Key%20from%20Google%20AI%20Studio&envLink=https%3A%2F%2Faistudio.google.com%2Fapikey&project-name=jobshield)
+
+### Option 2: Deploy from Vercel Dashboard
+1. Go to [vercel.com/new](https://vercel.com/new).
+2. Connect your GitHub account and import the repository: **`Pranjalwork1/JobShield`**.
+3. In **Project Configuration**:
+   * **Root Directory**: Click *Edit* and select **`jobshield`**.
+   * **Framework Preset**: Next.js (automatically detected).
+4. In **Environment Variables**, add:
+   * `GEMINI_API_KEY`: *(Your Gemini API key from Google AI Studio)*
+   * `GEMINI_MODEL`: `gemini-3.8-flash`
+5. Click **Deploy**. Your live site will be ready in under 60 seconds with SSL and continuous deployment on every `git push`.
 
 ---
 
