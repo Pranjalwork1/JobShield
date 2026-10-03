@@ -94,6 +94,75 @@ graph TD
 
 ---
 
+## 🧠 JobShield P3 — Intelligence Engine
+
+JobShield P3 extends the platform beyond AI extraction into a **deterministic, evidence-backed intelligence layer**. While Gemini P2 interprets and extracts raw structured facts from multimodal documents, JobShield's deterministic intelligence engine ensures that all findings, contradictions, and action items are derived through auditable business rules with 100% determinism and traceability.
+
+### The Three-Phase Pipeline
+
+```
+USER
+ ↓
+JOB CASE (P1: Evidence Intake & Local Isolation)
+ ↓
+GEMINI (P2: Multimodal Extraction & JSON Schema Enforcement)
+ ↓
+NORMALIZED FACTS (P3: Canonical Case Representation)
+ ↓
+DETERMINISTIC RULE ENGINE (P3: Evidence-Backed Rules)
+ ↓
+CONTRADICTION ENGINE (P3: Cross-Evidence Inconsistency Detection)
+ ↓
+EVIDENCE LINKING & AUDIT TRAIL (P3: Traceable Evidence References)
+ ↓
+VERIFICATION QUEUE (P3: Actionable Due Diligence Checklist)
+ ↓
+JOBSHIELD INTELLIGENCE REPORT & AUDIT TIMELINE
+```
+
+### Key P3 Pillars
+
+1. **Conservative Fact Normalization (`lib/intelligence/normalize.ts`)**:
+   - Standardizes company names (stripping legal suffixes like `Pvt Ltd`, `Private Limited`, `Inc`, `LLC` safely without altering brand words).
+   - Normalizes salary representations into parsed amounts, currencies, and annual/monthly periods (e.g. `8.5 LPA` → `850,000 INR/annum`, `₹12,00,000` → `1,200,000 INR/annum`).
+   - Parses recruiter email domains, detecting public free email providers (e.g. `gmail.com`, `yahoo.com`, `outlook.com`).
+   - Normalizes international and national phone formats.
+
+2. **Deterministic Rule Engine (`lib/intelligence/rules.ts`)**:
+   - `PAYMENT_REQUEST`: Flags upfront fees, registration fees, laptop deposits, or training fees before formal hire (High Severity).
+   - `FINANCIAL_CREDENTIALS`: Flags requests for bank account details, cancelled cheques, card numbers, UPI PINs, or OTPs (High Severity).
+   - `SENSITIVE_DATA_REQUEST`: Flags government identity document requests (PAN, Aadhaar, Passport, SSN) before verified employment (Medium/High Severity).
+   - `PUBLIC_RECRUITER_EMAIL`: Flags recruiters using free public domains for identifiable corporations (Medium Severity).
+   - `DOMAIN_MISMATCH`: Flags discrepancies between recruiter email domains and stated corporate web domains (Medium Severity).
+   - **Zero Scam Scores**: JobShield never displays misleading fraud probability percentages (e.g. "87% scam"). Findings are strictly evidence-backed.
+
+3. **Cross-Evidence Contradiction Detection (`lib/intelligence/contradictions.ts`)**:
+   - Compares facts across multiple evidence items (e.g., offer PDF vs. WhatsApp screenshot vs. recruiter email).
+   - Detects salary discrepancies (e.g., Offer letter states ₹8.5 LPA while recruiter message promises ₹12 LPA).
+   - Detects company identity conflicts (e.g., ABC Technologies vs. XYZ Solutions).
+   - Detects recruiter and role conflicts across documents.
+   - **Conservative Evaluation**: Missing data is never treated as a contradiction. Minor title variations are not falsely flagged.
+
+4. **Evidence Linking & Audit Trail (`lib/intelligence/evidence.ts`)**:
+   - Every intelligence finding and contradiction links directly to its source evidence item (PDF, image, text message, or URL).
+   - Full 3-step visual trail: `Finding` → `Attributed Document` → `Observed Quote/Data`.
+
+5. **Actionable Verification Queue (`lib/intelligence/verification.ts`)**:
+   - Converts findings and extracted facts into a structured checklist:
+     - Confirm employer identity via official corporate registries
+     - Confirm job opening exists on company's verified careers portal
+     - Verify recruiter identity with official HR switchboard
+     - Confirm payment and document requirements directly with verified HR
+   - All targets start in `not_started` status.
+
+6. **Case Investigation Timeline (`lib/intelligence/types.ts`)**:
+   - Immutable, per-case chronological audit log tracking case creation, evidence updates, Gemini analysis completions, and intelligence evaluations.
+
+> **Important Boundary Notice**:  
+> JobShield P3 analyzes **only the evidence supplied by the user**. It deliberately does **NOT** conduct web scraping, WHOIS domain lookups, LinkedIn searches, or live employer verification. Those capabilities are reserved for future phases. All UI messaging clearly reflects: *"Observed in supplied evidence • Requires independent verification"*.
+
+---
+
 ## 🚀 Quick Start & Usage
 
 ### Prerequisites

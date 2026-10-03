@@ -5,6 +5,8 @@ import {
   JobShieldAnalysisSchema,
   geminiResponseJsonSchema,
 } from "@/lib/schemas";
+import { analyzeJobShieldIntelligence } from "@/lib/intelligence";
+import { Evidence } from "@/types/jobshield";
 
 const ALLOWED_MIME_TYPES = new Set([
   "application/pdf",
@@ -288,11 +290,41 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 8. Return structured analysis result
+    // 8. Generate P3 Intelligence Engine Layer
+    let intelligence = null;
+    let intelligenceError: string | null = null;
+    try {
+      const caseEvidence: Evidence[] = validFiles.map((file, idx) => ({
+        id: `ev_${idx}_${file.name}`,
+        name: file.name,
+        type: file.type === "application/pdf" ? "pdf" : "image",
+        mimeType: file.type,
+        size: file.size,
+      }));
+
+      intelligence = analyzeJobShieldIntelligence(
+        {
+          id: "api_case",
+          title: validationResult.data.case_summary.job_title,
+          company: validationResult.data.case_summary.company,
+          recruiterMessage: message,
+          jobUrl: url,
+          evidence: caseEvidence,
+        },
+        validationResult.data
+      );
+    } catch (intelErr) {
+      console.error("[JobShield API] Intelligence generation error:", intelErr);
+      intelligenceError = "JobShield could not generate the intelligence layer.";
+    }
+
+    // 9. Return structured analysis and intelligence result
     return NextResponse.json(
       {
         success: true,
         analysis: validationResult.data,
+        intelligence,
+        intelligenceError,
         model: usedModel,
       },
       { status: 200 }

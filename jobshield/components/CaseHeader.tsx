@@ -10,6 +10,8 @@ import {
   Clock,
   AlertTriangle,
   CheckCircle2,
+  ShieldAlert,
+  CheckSquare,
 } from "lucide-react";
 import { JobShieldCase } from "@/types/jobshield";
 import { getCaseDisplayTitle } from "@/lib/caseStore";
@@ -118,12 +120,25 @@ export function CaseHeader({
           <span>{company}</span>
         </p>
 
-        <div className="flex flex-wrap items-center gap-4 text-xs text-slate-400 pt-1">
+        <div className="flex flex-wrap items-center gap-3 text-xs text-slate-400 pt-1">
           <EvidenceSummary currentCase={currentCase} showDetails={true} size="sm" />
           <span className="flex items-center gap-1 font-mono text-[11px]">
             <Clock className="w-3.5 h-3.5 text-slate-400" />
             <span>{formatAnalyzed(currentCase.lastAnalyzedAt)}</span>
           </span>
+
+          {currentCase.intelligence && (
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="flex items-center gap-1 font-bold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-full text-[11px] border border-slate-200">
+                <ShieldAlert className="w-3 h-3 text-indigo-600" />
+                <span>{currentCase.intelligence.summary.totalFindings} intelligence findings</span>
+              </span>
+              <span className="flex items-center gap-1 font-bold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-full text-[11px] border border-slate-200">
+                <CheckSquare className="w-3 h-3 text-emerald-600" />
+                <span>{currentCase.intelligence.summary.verificationTargetCount} verification targets</span>
+              </span>
+            </div>
+          )}
         </div>
       </div>
 

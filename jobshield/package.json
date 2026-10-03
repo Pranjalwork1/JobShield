@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "npx tsx scripts/verify-p3-engine.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.27.0",

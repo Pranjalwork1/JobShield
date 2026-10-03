@@ -148,8 +148,36 @@ export function JobCaseCard({
           )}
         </div>
 
-        {/* Risk Badge (matching screenshot) */}
-        {caseItem.analysis && riskCount > 0 && (
+        {/* Intelligence / Findings Badge (Requirements 53, 54) */}
+        {caseItem.intelligence ? (
+          <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+            <span
+              className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border inline-flex items-center gap-1 ${
+                caseItem.intelligence.summary.highSeverityCount > 0
+                  ? "bg-rose-50 text-rose-700 border-rose-200"
+                  : caseItem.intelligence.summary.totalFindings > 0
+                  ? "bg-amber-50 text-amber-800 border-amber-200"
+                  : "bg-slate-100 text-slate-600 border-slate-200"
+              }`}
+            >
+              <span>
+                {caseItem.intelligence.summary.totalFindings} finding{caseItem.intelligence.summary.totalFindings === 1 ? "" : "s"}
+              </span>
+            </span>
+
+            {caseItem.intelligence.summary.contradictionCount > 0 && (
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                {caseItem.intelligence.summary.contradictionCount} conflict{caseItem.intelligence.summary.contradictionCount === 1 ? "" : "s"}
+              </span>
+            )}
+
+            {caseItem.intelligence.summary.verificationTargetCount > 0 && (
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">
+                {caseItem.intelligence.summary.verificationTargetCount} to verify
+              </span>
+            )}
+          </div>
+        ) : caseItem.analysis && riskCount > 0 ? (
           <div>
             <span
               className={`px-3 py-1 rounded-full text-xs font-bold border inline-block ${
@@ -161,7 +189,7 @@ export function JobCaseCard({
               {riskCount} risk indicator{riskCount === 1 ? "" : "s"}
             </span>
           </div>
-        )}
+        ) : null}
 
         {/* Bottom Row: Status, Folder & Timestamp */}
         <div className="flex items-center justify-between pt-2.5 border-t border-slate-100 text-[11px]">

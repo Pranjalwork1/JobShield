@@ -1,4 +1,7 @@
 import { JobShieldAnalysis } from "@/lib/schemas";
+import { JobShieldIntelligence, CaseTimelineEvent } from "@/lib/intelligence/types";
+
+export * from "@/lib/intelligence/types";
 
 export type EvidenceType = "pdf" | "image" | "text" | "url";
 
@@ -42,6 +45,8 @@ export interface JobShieldCase {
   evidence: Evidence[];
 
   analysis: JobShieldAnalysis | null;
+  intelligence?: JobShieldIntelligence | null;
+  timeline?: CaseTimelineEvent[];
 
   status: CaseStatus;
 

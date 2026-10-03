@@ -242,6 +242,8 @@ export async function getCases(): Promise<JobShieldCase[]> {
 
       const hydrated = casesResult.map((c) => ({
         ...c,
+        intelligence: c.intelligence || null,
+        timeline: c.timeline || [],
         evidence: (c.evidence || []).map((ev) => {
           if (ev.file) return ev;
           const b = blobMap.get(ev.id);
@@ -290,8 +292,14 @@ export async function getCaseById(id: string): Promise<JobShieldCase | null> {
         return;
       }
 
-      if (!found.evidence || found.evidence.length === 0) {
-        resolve(found);
+      const caseWithDefaults: JobShieldCase = {
+        ...found,
+        intelligence: found.intelligence || null,
+        timeline: found.timeline || [],
+      };
+
+      if (!caseWithDefaults.evidence || caseWithDefaults.evidence.length === 0) {
+        resolve(caseWithDefaults);
         return;
       }
 
@@ -304,7 +312,7 @@ export async function getCaseById(id: string): Promise<JobShieldCase | null> {
         const blobMap = new Map<string, { name: string; mimeType: string; blob: Blob }>();
         blobs.forEach((b) => blobMap.set(b.id, b));
 
-        const hydratedEvidence = found.evidence.map((ev) => {
+        const hydratedEvidence = caseWithDefaults.evidence.map((ev) => {
           if (ev.file) return ev;
           const b = blobMap.get(ev.id);
           if (b && b.blob) {
@@ -319,12 +327,12 @@ export async function getCaseById(id: string): Promise<JobShieldCase | null> {
         });
 
         resolve({
-          ...found,
+          ...caseWithDefaults,
           evidence: hydratedEvidence,
         });
       };
 
-      blobReq.onerror = () => resolve(found);
+      blobReq.onerror = () => resolve(caseWithDefaults);
     };
 
     req.onerror = () => reject(req.error);
@@ -337,6 +345,8 @@ export async function saveCase(caseData: JobShieldCase): Promise<void> {
   // Create a serializable clone of case data (without native File objects directly in case record)
   const caseToStore: JobShieldCase = {
     ...caseData,
+    intelligence: caseData.intelligence || null,
+    timeline: caseData.timeline || [],
     updatedAt: new Date().toISOString(),
     evidence: caseData.evidence.map((e) => ({
       id: e.id,
@@ -376,6 +386,18 @@ export async function saveCase(caseData: JobShieldCase): Promise<void> {
   });
 }
 
+export function createTimelineEvent(
+  type: import("@/lib/intelligence/types").CaseTimelineEvent["type"],
+  description: string
+): import("@/lib/intelligence/types").CaseTimelineEvent {
+  return {
+    id: `evt_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+    type,
+    timestamp: new Date().toISOString(),
+    description,
+  };
+}
+
 export async function createCase(params?: {
   title?: string;
   company?: string;
@@ -396,6 +418,10 @@ export async function createCase(params?: {
     jobUrl: "",
     evidence: [],
     analysis: null,
+    intelligence: null,
+    timeline: [
+      createTimelineEvent("case_created", "Case created in workspace"),
+    ],
     status: "draft",
     completedVerificationTargets: [],
     createdAt: now,

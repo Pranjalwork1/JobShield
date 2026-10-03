@@ -6,6 +6,7 @@
     "dev": "npm --prefix jobshield run dev",
     "build": "npm --prefix jobshield run build",
     "lint": "npm --prefix jobshield run lint",
-    "start": "npm --prefix jobshield run start"
+    "start": "npm --prefix jobshield run start",
+    "test": "npm --prefix jobshield run test"
   }
 }

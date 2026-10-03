@@ -12,9 +12,11 @@ import {
   createCase as dbCreateCase,
   deleteCase as dbDeleteCase,
   moveCase as dbMoveCase,
+  createTimelineEvent,
   SYSTEM_ALL_JOBS_ID,
   DEFAULT_MY_JOBS_ID,
 } from "@/lib/caseStore";
+import { analyzeJobShieldIntelligence } from "@/lib/intelligence";
 import { NewEraDynamicIsland } from "@/components/NewEraDynamicIsland";
 import { ZentraTopNav } from "@/components/ZentraTopNav";
 import { CaseWorkspace } from "@/components/CaseWorkspace";
@@ -249,6 +251,11 @@ export default function JobShieldPage() {
           jobUrl: DEMO_CASE_URL,
           evidence: demoEvidence,
           analysis: null,
+          intelligence: null,
+          timeline: [
+            createTimelineEvent("case_created", "Demo case populated with recruitment evidence"),
+            createTimelineEvent("evidence_added", "Loaded fake-offer-letter.pdf, whatsapp-screenshot.png, message, and URL"),
+          ],
           status: "draft",
           completedVerificationTargets: [],
           updatedAt: new Date().toISOString(),
@@ -269,6 +276,10 @@ export default function JobShieldPage() {
         newDemoCase.recruiterMessage = DEMO_CASE_MESSAGE;
         newDemoCase.jobUrl = DEMO_CASE_URL;
         newDemoCase.evidence = demoEvidence;
+        newDemoCase.timeline = [
+          createTimelineEvent("case_created", "Demo case created with recruitment evidence"),
+          createTimelineEvent("evidence_added", "Loaded fake-offer-letter.pdf, whatsapp-screenshot.png, message, and URL"),
+        ];
 
         await dbSaveCase(newDemoCase);
         setCases((prev) => [newDemoCase, ...prev]);
@@ -356,9 +367,21 @@ export default function JobShieldPage() {
       }
 
       const analysis: JobShieldAnalysis = data.analysis;
+      let intelligence = data.intelligence;
+
+      // Fallback: if server-side intelligence was null, generate it locally
+      if (!intelligence) {
+        try {
+          intelligence = analyzeJobShieldIntelligence(targetCase, analysis);
+        } catch (intelErr) {
+          console.warn("[JobShield] Local intelligence derivation error:", intelErr);
+        }
+      }
 
       // Status logic: if verification targets exist and need review -> "needs_verification", else "analyzed"
-      const hasVerificationTargets = (analysis.verification_targets?.length ?? 0) > 0;
+      const hasVerificationTargets =
+        (intelligence?.verificationTargets?.length ?? 0) > 0 ||
+        (analysis.verification_targets?.length ?? 0) > 0;
       const nextStatus = hasVerificationTargets ? "needs_verification" : "analyzed";
 
       // Auto-extract title and company following Section 21
@@ -367,8 +390,22 @@ export default function JobShieldPage() {
       const derivedCompany =
         analysis.case_summary?.company || targetCase.company || null;
 
+      const findingsCount = intelligence?.summary?.totalFindings ?? 0;
+      const contradictionsCount = intelligence?.summary?.contradictionCount ?? 0;
+
+      const updatedTimeline = [
+        ...(targetCase.timeline || []),
+        createTimelineEvent("analysis_completed", "Gemini multimodal evidence extraction completed"),
+        createTimelineEvent(
+          "intelligence_generated",
+          `JobShield Intelligence Engine derived ${findingsCount} finding(s) and ${contradictionsCount} contradiction(s)`
+        ),
+      ];
+
       await handleUpdateCase({
         analysis,
+        intelligence: intelligence || null,
+        timeline: updatedTimeline,
         status: nextStatus,
         title: derivedTitle,
         company: derivedCompany,
@@ -392,6 +429,39 @@ export default function JobShieldPage() {
     } finally {
       abortControllerRef.current = null;
       setIsAnalyzing(false);
+    }
+  };
+
+  // 7. Retry Intelligence (Requirement 89: Rerun deterministic P3 without calling Gemini)
+  const handleRetryIntelligence = async () => {
+    if (!selectedCaseId) return;
+    const storedCase = await dbGetCaseById(selectedCaseId);
+    const targetCase = storedCase || currentCase;
+    if (!targetCase || !targetCase.analysis) return;
+
+    try {
+      const intelligence = analyzeJobShieldIntelligence(targetCase, targetCase.analysis);
+      const findingsCount = intelligence.summary.totalFindings;
+      const contradictionsCount = intelligence.summary.contradictionCount;
+
+      const updatedTimeline = [
+        ...(targetCase.timeline || []),
+        createTimelineEvent(
+          "intelligence_generated",
+          `JobShield Intelligence Engine re-evaluated: ${findingsCount} finding(s), ${contradictionsCount} contradiction(s)`
+        ),
+      ];
+
+      const hasTargets = (intelligence.verificationTargets?.length ?? 0) > 0;
+      const nextStatus = hasTargets ? "needs_verification" : "analyzed";
+
+      await handleUpdateCase({
+        intelligence,
+        timeline: updatedTimeline,
+        status: nextStatus,
+      });
+    } catch (err) {
+      console.error("Retry intelligence failed:", err);
     }
   };
 
@@ -471,6 +541,7 @@ export default function JobShieldPage() {
                   folderName={folderNameMap.get(currentCase.folderId) || "My Jobs"}
                   onUpdateCase={handleUpdateCase}
                   onAnalyze={handleAnalyzeCase}
+                  onRetryIntelligence={handleRetryIntelligence}
                   isAnalyzing={isAnalyzing}
                   onStopAnalysis={handleStopAnalysis}
                   error={analysisError}

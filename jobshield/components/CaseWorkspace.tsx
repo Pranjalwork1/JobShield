@@ -9,13 +9,20 @@ import { BottomConsole } from "./BottomConsole";
 import { LoadingAnalysis } from "./LoadingAnalysis";
 import { AnalysisResult } from "./AnalysisResult";
 import { ErrorState } from "./ErrorState";
-import { RefreshCw, Layers } from "lucide-react";
+import { RefreshCw, Layers, Sparkles } from "lucide-react";
+import { IntelligenceSummary } from "./intelligence/IntelligenceSummary";
+import { IntelligenceFindings } from "./intelligence/IntelligenceFindings";
+import { ContradictionsPanel } from "./intelligence/ContradictionsPanel";
+import { EvidenceTrail } from "./intelligence/EvidenceTrail";
+import { VerificationQueue } from "./intelligence/VerificationQueue";
+import { CaseTimeline } from "./intelligence/CaseTimeline";
 
 interface CaseWorkspaceProps {
   currentCase: JobShieldCase;
   folderName: string;
   onUpdateCase: (updated: Partial<JobShieldCase>) => Promise<void>;
   onAnalyze: () => Promise<void>;
+  onRetryIntelligence?: () => Promise<void>;
   isAnalyzing: boolean;
   error: string | null;
   onClearError: () => void;
@@ -31,6 +38,7 @@ export function CaseWorkspace({
   folderName,
   onUpdateCase,
   onAnalyze,
+  onRetryIntelligence,
   isAnalyzing,
   error,
   onClearError,
@@ -115,9 +123,10 @@ export function CaseWorkspace({
         />
       )}
 
-      {/* 4. Analysis Results (if analyzed) */}
+      {/* 4. Analysis Results & P3 Intelligence (if analyzed) */}
       {currentCase.analysis && !isAnalyzing && (
         <div id="section-dossier" className="space-y-6 scroll-mt-24">
+          {/* P2 Gemini Analysis Dossier */}
           <AnalysisResult
             analysis={currentCase.analysis}
             onReset={handleClearAll}
@@ -125,25 +134,68 @@ export function CaseWorkspace({
             onToggleTarget={handleToggleVerificationTarget}
           />
 
+          {/* P3 JobShield Intelligence Layer */}
+          {currentCase.intelligence && (
+            <div id="section-intelligence" className="space-y-6 pt-2">
+              <IntelligenceSummary intelligence={currentCase.intelligence} />
+
+              <IntelligenceFindings findings={currentCase.intelligence.findings} />
+
+              {currentCase.intelligence.contradictions.length > 0 && (
+                <ContradictionsPanel
+                  contradictions={currentCase.intelligence.contradictions}
+                />
+              )}
+
+              <EvidenceTrail findings={currentCase.intelligence.findings} />
+
+              <VerificationQueue
+                targets={currentCase.intelligence.verificationTargets}
+                completedTargets={currentCase.completedVerificationTargets || []}
+                onToggleTarget={handleToggleVerificationTarget}
+              />
+            </div>
+          )}
+
+          {/* Action Bar for Re-analysis and Retry Intelligence */}
           <div className="flex flex-wrap items-center justify-between gap-3 p-6 rounded-[32px] bg-white/80 border border-slate-100 shadow-sm">
             <div>
               <h4 className="text-sm font-bold text-slate-800">
-                Want to refine or add more evidence?
+                JobShield Intelligence Actions
               </h4>
               <p className="text-xs text-slate-400 mt-0.5">
-                Attach more screenshots or letters below and re-run Gemini analysis for this case.
+                Re-evaluate deterministic rules locally, or re-run Gemini multimodal analysis with new evidence.
               </p>
             </div>
-            <button
-              type="button"
-              onClick={onAnalyze}
-              disabled={isAnalyzing}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-950 hover:bg-slate-800 text-white font-bold text-xs shadow-md transition-all active:scale-95 cursor-pointer"
-            >
-              <RefreshCw className="w-3.5 h-3.5" />
-              <span>Re-analyze Case</span>
-            </button>
+            <div className="flex items-center gap-2.5">
+              {onRetryIntelligence && (
+                <button
+                  type="button"
+                  onClick={onRetryIntelligence}
+                  disabled={isAnalyzing}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs border border-indigo-200 shadow-2xs transition-all active:scale-95 cursor-pointer"
+                  title="Re-run deterministic P3 rules on existing analysis without calling Gemini API"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+                  <span>Retry Intelligence</span>
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={onAnalyze}
+                disabled={isAnalyzing}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-950 hover:bg-slate-800 text-white font-bold text-xs shadow-md transition-all active:scale-95 cursor-pointer"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>Re-analyze Case</span>
+              </button>
+            </div>
           </div>
+
+          {/* Case Activity Timeline */}
+          {currentCase.timeline && currentCase.timeline.length > 0 && (
+            <CaseTimeline timeline={currentCase.timeline} />
+          )}
         </div>
       )}
 

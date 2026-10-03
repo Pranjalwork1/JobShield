@@ -74,6 +74,15 @@ export function JobCaseList({
         const recruiterMatch = (c.analysis?.case_summary?.recruiter_name || "")
           .toLowerCase()
           .includes(query);
+        const recruiterIntelligence = (c.intelligence?.normalizedFacts?.recruiter?.name || "")
+          .toLowerCase()
+          .includes(query);
+        const findingsMatch = (c.intelligence?.findings || []).some(
+          (f) =>
+            f.title.toLowerCase().includes(query) ||
+            f.summary.toLowerCase().includes(query) ||
+            f.observedEvidence.toLowerCase().includes(query)
+        );
 
         return (
           titleMatch ||
@@ -82,7 +91,9 @@ export function JobCaseList({
           folderMatch ||
           summaryJob ||
           summaryComp ||
-          recruiterMatch
+          recruiterMatch ||
+          recruiterIntelligence ||
+          findingsMatch
         );
       });
     }

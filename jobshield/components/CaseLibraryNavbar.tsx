@@ -105,12 +105,27 @@ export function CaseLibraryNavbar({
       list = list.filter((c) => {
         const titleMatch = (c.title || "").toLowerCase().includes(query);
         const companyMatch = (c.company || "").toLowerCase().includes(query);
+        const recruiterMatch =
+          (c.analysis?.case_summary?.recruiter_name || "")
+            .toLowerCase()
+            .includes(query) ||
+          (c.intelligence?.normalizedFacts?.recruiter?.name || "")
+            .toLowerCase()
+            .includes(query);
+        const findingsMatch = (c.intelligence?.findings || []).some(
+          (f) =>
+            f.title.toLowerCase().includes(query) ||
+            f.summary.toLowerCase().includes(query) ||
+            f.observedEvidence.toLowerCase().includes(query)
+        );
         const folderName = (folderMap.get(c.folderId) || "").toLowerCase();
         return (
           titleMatch ||
           companyMatch ||
           folderName.includes(query) ||
-          (c.jobUrl || "").toLowerCase().includes(query)
+          (c.jobUrl || "").toLowerCase().includes(query) ||
+          recruiterMatch ||
+          findingsMatch
         );
       });
     }

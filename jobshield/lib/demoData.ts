@@ -3,7 +3,7 @@ Subject: Offer Letter & Onboarding Instructions - ABC Technologies
 
 Dear Candidate,
 
-Congratulations! We are pleased to inform you that you have been selected for the Software Developer position at ABC Technologies. Your starting compensation will be ₹8,50,000 per annum, located at Bengaluru (Hybrid).
+Congratulations! We are pleased to inform you that you have been selected for the Software Developer position at ABC Technologies. Your starting compensation will be ₹12,00,000 per annum (12 LPA), located at Bengaluru (Hybrid).
 
 Before your official offer letter is dispatched and employee ID generated, company policy requires candidates to pay a ₹2,999 mandatory registration and background verification fee.
 
