@@ -1,0 +1,11 @@
+{
+  "name": "jobshield-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix jobshield run dev",
+    "build": "npm --prefix jobshield run build",
+    "lint": "npm --prefix jobshield run lint",
+    "start": "npm --prefix jobshield run start"
+  }
+}
