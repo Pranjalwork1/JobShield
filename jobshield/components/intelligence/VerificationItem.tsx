@@ -39,7 +39,7 @@ export function VerificationItem({
       className={`p-4 sm:p-5 rounded-[24px] border transition-all duration-200 cursor-pointer select-none space-y-2 flex items-start gap-3.5 ${
         isCompleted
           ? "bg-slate-50/70 border-slate-200 text-slate-400 opacity-80"
-          : "bg-white border-slate-200/90 hover:border-indigo-300 shadow-2xs hover:shadow-xs"
+          : "bg-white border-slate-200/90 hover:border-[#1E90FF] shadow-2xs hover:shadow-xs"
       }`}
       role="checkbox"
       aria-checked={isCompleted}
@@ -54,13 +54,13 @@ export function VerificationItem({
       {/* Checkbox Icon */}
       <button
         type="button"
-        className="mt-0.5 text-slate-400 hover:text-indigo-600 focus:outline-hidden transition-colors"
+        className="mt-0.5 text-slate-400 hover:text-[#1877D2] focus:outline-hidden transition-colors"
         aria-label={isCompleted ? `Mark ${target.title} as incomplete` : `Mark ${target.title} as completed`}
       >
         {isCompleted ? (
           <CheckSquare className="w-5 h-5 text-emerald-600 stroke-[2.2]" />
         ) : (
-          <Square className="w-5 h-5 text-slate-400 hover:text-indigo-600 stroke-[1.8]" />
+          <Square className="w-5 h-5 text-slate-400 hover:text-[#1877D2] stroke-[1.8]" />
         )}
       </button>
 

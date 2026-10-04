@@ -161,7 +161,7 @@ export function JobCaseList({
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder="Search checks, company..."
-              className="w-full pl-9 pr-3.5 py-2 bg-slate-50/90 border border-slate-200 rounded-full text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all font-medium"
+              className="w-full pl-9 pr-3.5 py-2 bg-slate-50/90 border border-slate-200 rounded-full text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1E90FF]/25 focus:border-[#1E90FF] transition-all font-medium"
             />
           </div>
 
@@ -186,17 +186,17 @@ export function JobCaseList({
       {/* Case List or Empty State */}
       {filteredCases.length === 0 ? (
         <div className="p-8 rounded-[32px] border border-dashed border-slate-200 bg-white/70 text-center space-y-3">
-          <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto shadow-sm">
+          <div className="w-12 h-12 rounded-2xl bg-[#EAF4FF] text-[#1E90FF] border border-[#B9DCFE] flex items-center justify-center mx-auto shadow-sm">
             <FolderOpen className="w-6 h-6" />
           </div>
 
           <div className="space-y-1">
-            <h5 className="text-sm font-bold text-slate-800">
+            <h5 className="text-sm font-bold text-[#101828]">
               {searchQuery.trim()
                 ? "No matching job checks"
                 : "No job checks in this folder yet"}
             </h5>
-            <p className="text-xs text-slate-400 max-w-xs mx-auto leading-relaxed">
+            <p className="text-xs text-[#667085] max-w-xs mx-auto leading-relaxed">
               {searchQuery.trim()
                 ? `No job cases matched "${searchQuery}". Try a different keyword.`
                 : "Keep your recruitment evidence organized by starting a new job check."}
@@ -206,7 +206,7 @@ export function JobCaseList({
           <button
             type="button"
             onClick={onNewCase}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-slate-950 hover:bg-slate-800 text-white text-xs font-bold shadow-md transition-all active:scale-95 cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#1E90FF] hover:bg-[#1877D2] active:bg-[#1565C0] text-white text-xs font-bold shadow-md shadow-[#1E90FF]/25 border-none transition-all active:scale-95 cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>+ New Job Check</span>

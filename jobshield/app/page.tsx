@@ -26,7 +26,8 @@ import { MoveCaseDialog } from "@/components/MoveCaseDialog";
 import { RenameCaseDialog } from "@/components/RenameCaseDialog";
 import { DeleteConfirmDialog } from "@/components/DeleteConfirmDialog";
 import { DEMO_CASE_MESSAGE, DEMO_CASE_URL } from "@/lib/demoData";
-import { FolderPlus, Plus, ShieldCheck, Loader2 } from "lucide-react";
+import { FolderPlus, Plus, Loader2 } from "lucide-react";
+import { JobShieldIcon } from "@/components/brand/JobShieldLogo";
 import { getCaseEvidenceBreakdown } from "@/components/EvidenceSummary";
 
 // JobShield Operations Dashboard Components
@@ -664,15 +665,15 @@ export default function JobShieldPage() {
                     />
                   ) : (
                     <div className="p-8 sm:p-14 rounded-[36px] bg-white border border-slate-200/80 shadow-xs text-center space-y-6 max-w-xl mx-auto my-12 animate-in fade-in duration-300">
-                      <div className="w-16 h-16 rounded-3xl bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center mx-auto shadow-sm">
-                        <ShieldCheck className="w-8 h-8" />
+                      <div className="w-16 h-16 rounded-3xl bg-[#EAF4FF] border border-[#B9DCFE] text-[#1E90FF] flex items-center justify-center mx-auto shadow-sm">
+                        <JobShieldIcon size={32} />
                       </div>
 
                       <div className="space-y-2">
-                        <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+                        <h2 className="text-xl sm:text-2xl font-extrabold text-[#101828] tracking-tight">
                           No active job check selected
                         </h2>
-                        <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto leading-relaxed">
+                        <p className="text-xs sm:text-sm text-[#667085] max-w-md mx-auto leading-relaxed">
                           Select an existing check from the Overview dashboard, or create a new job check to upload offer letters and recruiter messages.
                         </p>
                       </div>
@@ -681,15 +682,15 @@ export default function JobShieldPage() {
                         <button
                           type="button"
                           onClick={() => setIsCreateFolderOpen(true)}
-                          className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all cursor-pointer"
+                          className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-slate-200 text-xs font-bold text-slate-700 hover:bg-[#F4F9FF] hover:border-[#B9DCFE] hover:text-[#1877D2] transition-all cursor-pointer"
                         >
-                          <FolderPlus className="w-4 h-4 text-indigo-600" />
+                          <FolderPlus className="w-4 h-4 text-[#1E90FF]" />
                           <span>+ Create Folder</span>
                         </button>
                         <button
                           type="button"
                           onClick={() => setIsCreateCaseOpen(true)}
-                          className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-slate-950 hover:bg-slate-800 text-white text-xs font-bold shadow-md transition-all active:scale-95 cursor-pointer"
+                          className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#1E90FF] hover:bg-[#1877D2] active:bg-[#1565C0] text-white text-xs font-bold shadow-md shadow-[#1E90FF]/25 transition-all active:scale-95 cursor-pointer"
                         >
                           <Plus className="w-4 h-4" />
                           <span>+ New Job Check</span>

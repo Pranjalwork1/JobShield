@@ -60,12 +60,12 @@ function RenameCaseContent({
       <div className="bg-white/95 rounded-[32px] p-6 sm:p-7 w-full max-w-md border border-white shadow-2xl space-y-5 animate-in zoom-in-95 duration-150">
         <div className="flex items-center justify-between pb-2 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm">
+            <div className="w-10 h-10 rounded-2xl bg-[#EAF4FF] border border-[#B9DCFE] flex items-center justify-center text-[#1E90FF] shadow-sm">
               <Edit3 className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-slate-900">Rename Job Check</h3>
-              <p className="text-xs text-slate-400">Update job title and company metadata</p>
+              <h3 className="text-base font-bold text-[#101828]">Rename Job Check</h3>
+              <p className="text-xs text-[#667085]">Update job title and company metadata</p>
             </div>
           </div>
           <button
@@ -80,7 +80,7 @@ function RenameCaseContent({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5">
             <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-              <Briefcase className="w-3.5 h-3.5 text-indigo-500" />
+              <Briefcase className="w-3.5 h-3.5 text-[#1E90FF]" />
               <span>Job Title</span>
             </label>
             <input
@@ -88,13 +88,13 @@ function RenameCaseContent({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Senior Frontend Engineer"
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium"
+              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1E90FF]/20 focus:border-[#1E90FF] transition-all font-medium"
             />
           </div>
 
           <div className="space-y-1.5">
             <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-              <Building2 className="w-3.5 h-3.5 text-indigo-500" />
+              <Building2 className="w-3.5 h-3.5 text-[#1E90FF]" />
               <span>Company</span>
             </label>
             <input
@@ -102,7 +102,7 @@ function RenameCaseContent({
               value={company}
               onChange={(e) => setCompany(e.target.value)}
               placeholder="e.g. ABC Technologies"
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium"
+              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1E90FF]/20 focus:border-[#1E90FF] transition-all font-medium"
             />
           </div>
 
@@ -118,7 +118,7 @@ function RenameCaseContent({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-5 py-2 rounded-full text-xs font-bold bg-slate-950 hover:bg-slate-800 text-white shadow-md transition-all disabled:opacity-50 active:scale-95"
+              className="px-5 py-2 rounded-full text-xs font-bold bg-[#1E90FF] hover:bg-[#1877D2] active:bg-[#1565C0] text-white shadow-md shadow-[#1E90FF]/25 border-none transition-all disabled:opacity-50 active:scale-95 cursor-pointer"
             >
               {isSubmitting ? "Saving..." : "Save Changes"}
             </button>

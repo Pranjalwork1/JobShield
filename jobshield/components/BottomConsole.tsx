@@ -194,13 +194,13 @@ export function BottomConsole({
               title={canAnalyze ? "Analyze Case" : "Add evidence to analyze"}
               className={`px-4 sm:px-5 py-2.5 rounded-full font-semibold text-xs sm:text-sm flex items-center gap-2 shadow-md transition-all shrink-0 ${
                 canAnalyze
-                  ? "bg-slate-950 hover:bg-slate-900 text-white cursor-pointer active:scale-95 shadow-slate-950/20"
+                  ? "bg-[#1E90FF] hover:bg-[#1877D2] active:bg-[#1565C0] text-white cursor-pointer active:scale-95 shadow-[#1E90FF]/25 border-none"
                   : "bg-slate-200 text-slate-400 cursor-not-allowed"
               }`}
             >
               {isAnalyzing ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin text-cyan-400" />
+                  <Loader2 className="w-4 h-4 animate-spin text-white" />
                   <span className="hidden sm:inline">Analyzing...</span>
                 </>
               ) : (
@@ -218,9 +218,9 @@ export function BottomConsole({
           <button
             type="button"
             onClick={onLoadDemo}
-            className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950 text-white text-xs font-semibold hover:bg-slate-800 transition-all active:scale-95 cursor-pointer shadow-sm"
+            className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EAF4FF] text-[#101828] text-xs font-semibold hover:bg-[#DDF0FF] border border-[#B9DCFE] transition-all active:scale-95 cursor-pointer shadow-2xs"
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
             <span>Load Demo Case</span>
           </button>
 

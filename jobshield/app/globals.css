@@ -1,43 +1,80 @@
 @import "tailwindcss";
 
 :root {
-  --background: #e5e8ee;
-  --foreground: #090d16;
+  --background: #F8FAFC;
+  --foreground: #101828;
+  --primary: #1E90FF;
+  --primary-hover: #1877D2;
+  --primary-light: #EAF4FF;
+  --primary-subtle: #F4F9FF;
+  --text-primary: #101828;
+  --text-secondary: #667085;
+  --border: #E4E7EC;
+  --card: #FFFFFF;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: #1E90FF;
+  --color-primary-hover: #1877D2;
+  --color-primary-light: #EAF4FF;
+  --color-primary-subtle: #F4F9FF;
+  --color-navy: #101828;
+  --color-secondary-text: #667085;
+  --color-border-subtle: #E4E7EC;
   --font-sans: var(--font-plus-jakarta-sans), system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
 }
 
 body {
-  background-color: #e5e8ee;
+  background-color: #F8FAFC;
   background-image: 
-    radial-gradient(at 0% 0%, rgba(225, 232, 245, 0.9) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(230, 235, 248, 0.9) 0px, transparent 50%),
-    radial-gradient(at 50% 100%, rgba(215, 225, 242, 0.6) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, rgba(234, 244, 255, 0.8) 0px, transparent 45%),
+    radial-gradient(at 100% 0%, rgba(244, 249, 255, 0.9) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(234, 244, 255, 0.5) 0px, transparent 55%);
   color: var(--foreground);
   font-family: var(--font-sans);
   min-height: 100vh;
   overflow-x: hidden;
 }
 
+/* Links default styling */
+a {
+  color: #1E90FF;
+  transition: color 0.15s ease-in-out;
+}
+a:hover {
+  color: #1877D2;
+}
+
+/* Keyboard accessibility focus rings */
+:focus-visible {
+  outline: 2px solid #1E90FF;
+  outline-offset: 2px;
+}
+
 /* Glassmorphism helpers */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.95);
-  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.6);
+  border: 1px solid rgba(228, 231, 236, 0.9);
+  box-shadow: 0 25px 50px -12px rgba(16, 24, 40, 0.06), 0 0 0 1px rgba(228, 231, 236, 0.6);
 }
 
 .glass-pill {
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+  border: 1px solid rgba(228, 231, 236, 0.8);
+  box-shadow: 0 4px 12px rgba(16, 24, 40, 0.04);
+}
+
+.brand-pill {
+  background: #EAF4FF;
+  color: #101828;
+  border: 1px solid #B9DCFE;
+  box-shadow: 0 2px 6px rgba(30, 144, 255, 0.08);
 }
 
 .dark-pill {

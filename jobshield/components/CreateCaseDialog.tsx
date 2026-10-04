@@ -60,12 +60,12 @@ export function CreateCaseDialog({
       <div className="bg-white/95 rounded-[32px] p-6 sm:p-8 w-full max-w-lg border border-white shadow-2xl space-y-6 animate-in zoom-in-95 duration-150">
         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm">
+            <div className="w-10 h-10 rounded-2xl bg-[#EAF4FF] border border-[#B9DCFE] flex items-center justify-center text-[#1E90FF] shadow-sm">
               <ShieldAlert className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-slate-900">New Job Check</h3>
-              <p className="text-xs text-slate-400">
+              <h3 className="text-base font-bold text-[#101828]">New Job Check</h3>
+              <p className="text-xs text-[#667085]">
                 Start a clean, isolated recruitment investigation
               </p>
             </div>
@@ -82,7 +82,7 @@ export function CreateCaseDialog({
         <div className="space-y-4">
           <div className="space-y-1.5">
             <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-              <Briefcase className="w-3.5 h-3.5 text-indigo-500" />
+              <Briefcase className="w-3.5 h-3.5 text-[#1E90FF]" />
               <span>Job Title (Optional)</span>
             </label>
             <input
@@ -91,13 +91,13 @@ export function CreateCaseDialog({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Software Developer, Product Manager"
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400"
+              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1E90FF]/20 focus:border-[#1E90FF] transition-all placeholder:text-slate-400"
             />
           </div>
 
           <div className="space-y-1.5">
             <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-              <Building2 className="w-3.5 h-3.5 text-indigo-500" />
+              <Building2 className="w-3.5 h-3.5 text-[#1E90FF]" />
               <span>Company (Optional)</span>
             </label>
             <input
@@ -105,19 +105,19 @@ export function CreateCaseDialog({
               value={company}
               onChange={(e) => setCompany(e.target.value)}
               placeholder="e.g. ABC Technologies, Google, Startup Ltd."
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400"
+              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1E90FF]/20 focus:border-[#1E90FF] transition-all placeholder:text-slate-400"
             />
           </div>
 
           <div className="space-y-1.5">
             <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-              <Folder className="w-3.5 h-3.5 text-indigo-500" />
+              <Folder className="w-3.5 h-3.5 text-[#1E90FF]" />
               <span>Destination Folder</span>
             </label>
             <select
               value={selectedFolderId}
               onChange={(e) => setSelectedFolderId(e.target.value)}
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium"
+              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1E90FF]/20 focus:border-[#1E90FF] transition-all font-medium"
             >
               {validFolders.map((f) => (
                 <option key={f.id} value={f.id}>
@@ -127,7 +127,7 @@ export function CreateCaseDialog({
             </select>
           </div>
 
-          <p className="text-xs text-slate-400 bg-slate-50 p-3 rounded-2xl border border-slate-100 leading-relaxed">
+          <p className="text-xs text-[#667085] bg-[#F4F9FF] p-3 rounded-2xl border border-[#B9DCFE]/60 leading-relaxed">
             💡 <strong>Tip:</strong> If left empty, JobShield will automatically derive the company and role title from your uploaded offer letter or recruiter message via Gemini analysis.
           </p>
         </div>
@@ -137,7 +137,7 @@ export function CreateCaseDialog({
             type="button"
             disabled={isSubmitting}
             onClick={() => handleCreate(true)}
-            className="w-full sm:w-auto text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors"
+            className="w-full sm:w-auto text-xs font-semibold text-slate-500 hover:text-[#1E90FF] transition-colors"
           >
             Skip details and start
           </button>
@@ -155,7 +155,7 @@ export function CreateCaseDialog({
               type="button"
               disabled={isSubmitting}
               onClick={() => handleCreate(false)}
-              className="px-5 py-2.5 rounded-full text-xs font-bold bg-slate-950 hover:bg-slate-800 text-white shadow-md transition-all disabled:opacity-50 active:scale-95"
+              className="px-5 py-2.5 rounded-full text-xs font-bold bg-[#1E90FF] hover:bg-[#1877D2] active:bg-[#1565C0] text-white shadow-md shadow-[#1E90FF]/25 border-none transition-all disabled:opacity-50 active:scale-95 cursor-pointer"
             >
               {isSubmitting ? "Creating..." : "Create Case"}
             </button>

@@ -7,8 +7,8 @@ import {
   Compass,
   LayoutGrid,
   History,
-  Shield,
 } from "lucide-react";
+import { JobShieldIcon } from "@/components/brand/JobShieldLogo";
 
 interface FloatingDockProps {
   onNewCase: () => void;
@@ -33,7 +33,7 @@ export function FloatingDock({
           type="button"
           onClick={onNewCase}
           title="New Recruitment Case"
-          className="w-10 h-10 rounded-full bg-slate-950 hover:bg-slate-800 text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer group"
+          className="w-10 h-10 rounded-full bg-[#1E90FF] hover:bg-[#1877D2] text-white flex items-center justify-center shadow-lg shadow-[#1E90FF]/25 hover:scale-105 active:scale-95 transition-all cursor-pointer group"
         >
           <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" />
         </button>
@@ -54,7 +54,7 @@ export function FloatingDock({
           className={`w-10 h-10 rounded-2xl flex items-center justify-center transition-all cursor-pointer relative ${
             isAnalyzing
               ? "bg-rose-50 text-rose-600 hover:bg-rose-100 animate-pulse"
-              : "hover:bg-slate-100 text-slate-600 hover:text-slate-950"
+              : "hover:bg-[#EAF4FF] text-slate-600 hover:text-[#1877D2]"
           }`}
         >
           {isAnalyzing ? (
@@ -63,7 +63,7 @@ export function FloatingDock({
             <Search className="w-5 h-5" />
           )}
           {evidenceCount > 0 && !isAnalyzing && (
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-cyan-500" />
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#1E90FF]" />
           )}
         </button>
 
@@ -74,7 +74,7 @@ export function FloatingDock({
             el?.scrollIntoView({ behavior: "smooth" });
           }}
           title="Evidence Intake Cards"
-          className="w-10 h-10 rounded-2xl hover:bg-slate-100 text-slate-600 hover:text-slate-950 flex items-center justify-center transition-all cursor-pointer"
+          className="w-10 h-10 rounded-2xl hover:bg-[#EAF4FF] text-slate-600 hover:text-[#1877D2] flex items-center justify-center transition-all cursor-pointer"
         >
           <Compass className="w-5 h-5" />
         </button>
@@ -86,7 +86,7 @@ export function FloatingDock({
             el?.scrollIntoView({ behavior: "smooth" });
           }}
           title="Case Dossier"
-          className="w-10 h-10 rounded-2xl hover:bg-slate-100 text-slate-600 hover:text-slate-950 flex items-center justify-center transition-all cursor-pointer"
+          className="w-10 h-10 rounded-2xl hover:bg-[#EAF4FF] text-slate-600 hover:text-[#1877D2] flex items-center justify-center transition-all cursor-pointer"
         >
           <LayoutGrid className="w-5 h-5" />
         </button>
@@ -98,7 +98,7 @@ export function FloatingDock({
             el?.scrollIntoView({ behavior: "smooth" });
           }}
           title="Verification Checklist"
-          className="w-10 h-10 rounded-2xl hover:bg-slate-100 text-slate-600 hover:text-slate-950 flex items-center justify-center transition-all cursor-pointer"
+          className="w-10 h-10 rounded-2xl hover:bg-[#EAF4FF] text-slate-600 hover:text-[#1877D2] flex items-center justify-center transition-all cursor-pointer"
         >
           <History className="w-5 h-5" />
         </button>
@@ -107,10 +107,10 @@ export function FloatingDock({
       {/* Bottom Brand Logo Button */}
       <div className="pt-4">
         <div
-          title="JobShield AI"
-          className="w-10 h-10 rounded-2xl bg-slate-950 text-white flex items-center justify-center shadow-md font-bold text-xs"
+          title="JobShield — Verify before you trust"
+          className="w-10 h-10 rounded-2xl bg-[#EAF4FF] border border-[#B9DCFE] flex items-center justify-center shadow-xs"
         >
-          <Shield className="w-5 h-5 text-cyan-400" />
+          <JobShieldIcon size={22} />
         </div>
       </div>
     </aside>

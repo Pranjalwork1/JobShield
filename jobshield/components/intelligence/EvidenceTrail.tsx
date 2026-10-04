@@ -16,7 +16,7 @@ export function EvidenceTrail({ findings }: EvidenceTrailProps) {
       <div className="flex items-center justify-between px-1">
         <div className="space-y-0.5">
           <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-            <Waypoints className="w-4 h-4 text-indigo-600" />
+            <Waypoints className="w-4 h-4 text-[#1E90FF]" />
             <span>Evidence Audit Trail</span>
           </h3>
           <p className="text-xs text-slate-400">
@@ -33,11 +33,11 @@ export function EvidenceTrail({ findings }: EvidenceTrailProps) {
           >
             {/* Step 1: Finding */}
             <div className="flex items-start gap-3">
-              <div className="w-7 h-7 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center shrink-0 font-mono text-xs font-bold">
+              <div className="w-7 h-7 rounded-xl bg-[#EAF4FF] border border-[#B9DCFE] text-[#1E90FF] flex items-center justify-center shrink-0 font-mono text-xs font-bold">
                 1
               </div>
               <div className="min-w-0">
-                <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-wider">
+                <span className="text-[10px] font-bold text-[#1877D2] uppercase tracking-wider">
                   Finding
                 </span>
                 <p className="text-sm font-extrabold text-slate-900">

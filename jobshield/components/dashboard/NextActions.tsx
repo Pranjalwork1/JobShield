@@ -58,7 +58,7 @@ export function NextActions({
             <button
               type="button"
               onClick={onOpenQueue}
-              className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 transition-colors cursor-pointer"
+              className="text-xs font-semibold text-[#1E90FF] hover:text-[#1877D2] transition-colors cursor-pointer"
             >
               Open queue
             </button>
@@ -84,12 +84,12 @@ export function NextActions({
               <div
                 key={act.id}
                 onClick={() => onSelectCase(act.caseId)}
-                className="group flex items-start justify-between gap-3 p-3.5 rounded-2xl bg-slate-50/60 hover:bg-slate-100/80 border border-slate-100 hover:border-slate-200 transition-all cursor-pointer"
+                className="group flex items-start justify-between gap-3 p-3.5 rounded-2xl bg-slate-50/60 hover:bg-[#F4F9FF] border border-slate-100 hover:border-[#B9DCFE] transition-all cursor-pointer"
               >
                 <div className="space-y-1.5 flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     {getPriorityBadge(act.priority)}
-                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 truncate group-hover:text-indigo-600 transition-colors">
+                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 truncate group-hover:text-[#1877D2] transition-colors">
                       {act.title}
                     </h4>
                   </div>
@@ -104,7 +104,7 @@ export function NextActions({
                     e.stopPropagation();
                     onSelectCase(act.caseId);
                   }}
-                  className="shrink-0 w-8 h-8 rounded-xl bg-white border border-slate-200 text-slate-600 group-hover:bg-slate-950 group-hover:text-white group-hover:border-slate-950 flex items-center justify-center transition-all cursor-pointer shadow-xs"
+                  className="shrink-0 w-8 h-8 rounded-xl bg-white border border-slate-200 text-slate-600 group-hover:bg-[#1E90FF] group-hover:text-white group-hover:border-[#1E90FF] flex items-center justify-center transition-all cursor-pointer shadow-xs"
                   title="Open case"
                 >
                   <ArrowUpRight className="w-4 h-4" />

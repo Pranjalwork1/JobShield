@@ -490,7 +490,7 @@ export function CaseLibraryNavbar({
                     onNewCase();
                     setIsCaseDrawerOpen(false);
                   }}
-                  className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-slate-950 text-white text-xs font-bold hover:bg-slate-800 cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#1E90FF] text-white text-xs font-bold hover:bg-[#1877D2] active:bg-[#1565C0] shadow-sm shadow-[#1E90FF]/25 cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>+ Create First Check</span>

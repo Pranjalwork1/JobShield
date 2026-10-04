@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { CheckCircle2, Circle, Loader2, Sparkles, Shield } from "lucide-react";
+import { CheckCircle2, Circle, Loader2, Sparkles } from "lucide-react";
+import { JobShieldIcon } from "@/components/brand/JobShieldLogo";
 
 interface LoadingAnalysisProps {
   currentStage?: number;
@@ -23,7 +24,6 @@ export function LoadingAnalysis({ currentStage = 2, onStopAnalysis }: LoadingAna
     const timer1 = setTimeout(() => setActiveStep((prev) => Math.max(prev, 2)), 600);
     const timer2 = setTimeout(() => setActiveStep((prev) => Math.max(prev, 3)), 2000);
     const timer3 = setTimeout(() => setActiveStep((prev) => Math.max(prev, 4)), 5500);
-
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
@@ -35,19 +35,19 @@ export function LoadingAnalysis({ currentStage = 2, onStopAnalysis }: LoadingAna
     <div className="rounded-[36px] bg-white/95 p-8 sm:p-12 border border-white/90 shadow-2xl shadow-slate-200/50 space-y-8 animate-in fade-in">
       <div className="flex flex-col items-center text-center space-y-3">
         <div className="relative">
-          <div className="w-16 h-16 rounded-3xl bg-slate-950 flex items-center justify-center text-white shadow-xl shadow-slate-900/20 animate-pulse">
-            <Shield className="w-8 h-8 text-cyan-400" />
+          <div className="w-16 h-16 rounded-3xl bg-[#EAF4FF] border border-[#B9DCFE] flex items-center justify-center text-[#1E90FF] shadow-xl shadow-[#1E90FF]/20 animate-pulse">
+            <JobShieldIcon size={34} />
           </div>
-          <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-cyan-400 border-2 border-white flex items-center justify-center text-slate-950">
+          <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-[#1E90FF] border-2 border-white flex items-center justify-center text-white">
             <Sparkles className="w-3.5 h-3.5" />
           </div>
         </div>
 
         <div>
-          <h3 className="text-2xl font-extrabold text-slate-900">
+          <h3 className="text-2xl font-extrabold text-[#101828]">
             JobShield is analyzing your evidence
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-md">
+          <p className="text-xs sm:text-sm text-[#667085] mt-1 max-w-md">
             Reasoning across documents, message texts, and job links to isolate observable facts from unverified claims.
           </p>
         </div>
@@ -66,15 +66,15 @@ export function LoadingAnalysis({ currentStage = 2, onStopAnalysis }: LoadingAna
                 isDone
                   ? "bg-emerald-50/60 border-emerald-200/80 text-emerald-800"
                   : isCurrent
-                  ? "bg-slate-950 border-slate-900 text-white shadow-lg shadow-slate-900/10"
-                  : "bg-slate-50/60 border-slate-100 text-slate-400"
+                  ? "bg-[#1E90FF] border-[#1877D2] text-white shadow-lg shadow-[#1E90FF]/25"
+                  : "bg-slate-50/60 border-slate-100 text-[#667085]"
               }`}
             >
               <div className="shrink-0">
                 {isDone ? (
                   <CheckCircle2 className="w-5 h-5 text-emerald-600" />
                 ) : isCurrent ? (
-                  <Loader2 className="w-5 h-5 text-cyan-400 animate-spin" />
+                  <Loader2 className="w-5 h-5 text-white animate-spin" />
                 ) : (
                   <Circle className="w-5 h-5 text-slate-300" />
                 )}

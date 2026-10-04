@@ -37,14 +37,14 @@ export function FolderItem({
         }}
         className={`w-full flex items-center justify-between px-4 py-2.5 rounded-full text-sm font-semibold transition-all duration-150 cursor-pointer select-none ${
           isSelected
-            ? "bg-[#0B0F19] text-white shadow-md shadow-slate-950/20"
-            : "text-slate-800 hover:bg-slate-100/80 hover:text-slate-950"
+            ? "bg-[#EAF4FF] text-[#101828] font-bold border border-[#B9DCFE] shadow-xs"
+            : "text-[#667085] hover:bg-slate-100/80 hover:text-[#101828]"
         }`}
       >
         <div className="flex items-center gap-3 min-w-0 flex-1">
           <Folder
             className={`w-4 h-4 shrink-0 transition-colors ${
-              isSelected ? "text-cyan-400 stroke-[2]" : "text-blue-500 stroke-[1.8]"
+              isSelected ? "text-[#1E90FF] stroke-[2.2]" : "text-[#667085] stroke-[1.8]"
             }`}
           />
           <span className="truncate">{folder.name}</span>
@@ -54,7 +54,7 @@ export function FolderItem({
           <span
             className={`w-6 h-6 rounded-full font-mono text-xs font-bold flex items-center justify-center shrink-0 ${
               isSelected
-                ? "bg-slate-800 text-slate-100"
+                ? "bg-white text-[#1877D2] border border-[#B9DCFE]"
                 : "bg-slate-100 text-slate-500 group-hover:bg-slate-200"
             }`}
           >

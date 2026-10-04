@@ -106,17 +106,17 @@ export function JobCaseCard({
         }}
         className={`w-full p-4 rounded-[28px] border text-left transition-all duration-200 cursor-pointer select-none space-y-3 ${
           isSelected
-            ? "bg-white border-2 border-indigo-400/95 shadow-md shadow-indigo-100/60 ring-2 ring-indigo-500/10"
-            : "bg-white border-slate-200/85 hover:border-slate-300 hover:shadow-2xs"
+            ? "bg-[#F4F9FF] border-2 border-[#1E90FF] shadow-md shadow-[#1E90FF]/15 ring-2 ring-[#1E90FF]/10"
+            : "bg-white border-[#E4E7EC] hover:border-slate-300 hover:shadow-2xs"
         }`}
       >
         {/* Top Header: Title & Menu */}
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0 flex-1 space-y-0.5">
-            <h4 className="text-base font-extrabold text-slate-900 truncate">
+            <h4 className="text-base font-extrabold text-[#101828] truncate">
               {title}
             </h4>
-            <p className="text-xs font-semibold text-slate-500 truncate">
+            <p className="text-xs font-semibold text-[#667085] truncate">
               {company}
             </p>
           </div>
@@ -136,11 +136,11 @@ export function JobCaseCard({
         {/* Evidence Breakdown (matching screenshot) */}
         <div className="space-y-0.5">
           <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
-            <FileText className="w-3.5 h-3.5 text-blue-600 stroke-[2.2]" />
+            <FileText className="w-3.5 h-3.5 text-[#1E90FF] stroke-[2.2]" />
             <span>{breakdown.label}</span>
           </div>
           {breakdown.details.length > 0 && (
-            <p className="text-[11px] text-slate-400 font-medium">
+            <p className="text-[11px] text-[#667085] font-medium">
               ( {breakdown.filesCount > 0 && `${breakdown.filesCount} file${breakdown.filesCount === 1 ? "" : "s"}`}
               {breakdown.hasMessage && ` • 💬 1 message`}
               {breakdown.hasUrl && ` • 🌐 1 URL`} )
@@ -172,7 +172,7 @@ export function JobCaseCard({
             )}
 
             {caseItem.intelligence.summary.verificationTargetCount > 0 && (
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#EAF4FF] text-[#1877D2] border border-[#B9DCFE]">
                 {caseItem.intelligence.summary.verificationTargetCount} to verify
               </span>
             )}

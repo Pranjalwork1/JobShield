@@ -173,10 +173,10 @@ export function CaseWorkspace({
                   type="button"
                   onClick={onRetryIntelligence}
                   disabled={isAnalyzing}
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs border border-indigo-200 shadow-2xs transition-all active:scale-95 cursor-pointer"
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#EAF4FF] hover:bg-[#DDF0FF] text-[#1877D2] font-bold text-xs border border-[#B9DCFE] shadow-2xs transition-all active:scale-95 cursor-pointer"
                   title="Re-run deterministic P3 rules on existing analysis without calling Gemini API"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+                  <Sparkles className="w-3.5 h-3.5 text-[#1E90FF]" />
                   <span>Retry Intelligence</span>
                 </button>
               )}
@@ -184,7 +184,7 @@ export function CaseWorkspace({
                 type="button"
                 onClick={onAnalyze}
                 disabled={isAnalyzing}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-950 hover:bg-slate-800 text-white font-bold text-xs shadow-md transition-all active:scale-95 cursor-pointer"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#1E90FF] hover:bg-[#1877D2] active:bg-[#1565C0] text-white font-bold text-xs shadow-md shadow-[#1E90FF]/25 border-none transition-all active:scale-95 cursor-pointer"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
                 <span>Re-analyze Case</span>

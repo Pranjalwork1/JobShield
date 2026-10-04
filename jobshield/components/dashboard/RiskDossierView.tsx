@@ -168,15 +168,15 @@ export function RiskDossierView({
               }}
               className={`flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
                 isActive
-                  ? "bg-slate-950 text-white shadow-sm"
-                  : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
+                  ? "bg-[#1E90FF] text-white shadow-sm"
+                  : "bg-white border border-slate-200 text-slate-700 hover:bg-[#F4F9FF]"
               }`}
             >
               <span>{tab.label}</span>
               <span
                 className={`text-[11px] px-1.5 py-0.5 rounded-full ${
                   isActive
-                    ? "bg-slate-800 text-slate-200"
+                    ? "bg-[#1877D2] text-white"
                     : "bg-slate-100 text-slate-600 font-mono"
                 }`}
               >
@@ -211,7 +211,7 @@ export function RiskDossierView({
               <button
                 type="button"
                 onClick={() => onNavigateSection("intake")}
-                className="mt-2 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-950 text-white text-xs font-bold hover:bg-slate-800 cursor-pointer"
+                className="mt-2 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#1E90FF] text-white text-xs font-bold hover:bg-[#1877D2] active:bg-[#1565C0] shadow-md shadow-[#1E90FF]/25 border-none cursor-pointer"
               >
                 <span>Go to Evidence Intake</span>
                 <ArrowRight className="w-3.5 h-3.5" />

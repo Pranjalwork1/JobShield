@@ -82,31 +82,31 @@ export function EvidenceUploader({
         {...getRootProps()}
         className={`relative border-2 border-dashed rounded-3xl p-6 sm:p-8 text-center transition-all duration-200 cursor-pointer ${
           isDragActive
-            ? "border-indigo-500 bg-indigo-50/60 scale-[0.99]"
+            ? "border-[#1E90FF] bg-[#EAF4FF] scale-[0.99]"
             : isDragReject
             ? "border-red-500 bg-red-50/60"
             : disabled || currentCount >= maxFiles
             ? "border-slate-200 bg-slate-100/50 opacity-60 cursor-not-allowed"
-            : "border-slate-200 hover:border-indigo-400 bg-white/80 hover:bg-white shadow-sm hover:shadow-md"
+            : "border-slate-200 hover:border-[#1E90FF] bg-white/80 hover:bg-white shadow-sm hover:shadow-md"
         }`}
       >
         <input {...getInputProps()} id="evidence-file-input" />
 
         <div className="flex flex-col items-center justify-center space-y-3">
-          <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-indigo-50 border border-indigo-100 text-indigo-600 group-hover:scale-105 transition-transform">
+          <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-[#EAF4FF] border border-[#B9DCFE] text-[#1E90FF] group-hover:scale-105 transition-transform">
             <UploadCloud className="w-7 h-7" />
           </div>
 
           <div className="space-y-1">
             <p className="text-base font-bold text-slate-800">
               {isDragActive ? (
-                <span className="text-indigo-600">Drop your evidence files here</span>
+                <span className="text-[#1E90FF]">Drop your evidence files here</span>
               ) : currentCount >= maxFiles ? (
                 <span className="text-amber-600">File limit reached ({maxFiles} files max)</span>
               ) : (
                 <>
                   Drag & Drop recruitment files here, or{" "}
-                  <span className="text-indigo-600 underline underline-offset-4 font-bold">
+                  <span className="text-[#1E90FF] underline underline-offset-4 font-bold">
                     browse files
                   </span>
                 </>

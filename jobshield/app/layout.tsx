@@ -42,7 +42,7 @@ export default function RootLayout({
       lang="en"
       className={`${plusJakartaSans.variable} ${geistMono.variable} antialiased`}
     >
-      <body className="min-h-screen bg-[#e5e8ee] text-slate-900 font-sans selection:bg-indigo-500/20 selection:text-indigo-900">
+      <body className="min-h-screen bg-[#F8FAFC] text-[#101828] font-sans selection:bg-[#EAF4FF] selection:text-[#1877D2]">
         {children}
       </body>
     </html>

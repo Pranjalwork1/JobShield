@@ -33,11 +33,11 @@ export function SystemStatus({ onViewAuditLog }: SystemStatusProps) {
   }, []);
 
   return (
-    <div className="rounded-[24px] bg-slate-950 text-white p-5 sm:p-7 shadow-xl shadow-slate-950/20 flex flex-col justify-between h-full border border-slate-800">
+    <div className="rounded-[24px] bg-[#101828] text-white p-5 sm:p-7 shadow-xl shadow-[#101828]/25 flex flex-col justify-between h-full border border-slate-800">
       <div>
         {/* Header Badge */}
         <div className="flex items-center justify-between gap-3 pb-4 border-b border-slate-800">
-          <div className="w-8 h-8 rounded-xl bg-indigo-600/30 border border-indigo-500/40 text-indigo-400 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-xl bg-[#1E90FF]/20 border border-[#1E90FF]/40 text-[#1E90FF] flex items-center justify-center">
             <Lock className="w-4 h-4" />
           </div>
 
@@ -62,7 +62,7 @@ export function SystemStatus({ onViewAuditLog }: SystemStatusProps) {
           <div className="space-y-2.5 pt-2">
             <div className="flex items-center justify-between text-xs py-1 border-b border-slate-800/80">
               <div className="flex items-center gap-2 text-slate-300 font-medium">
-                <HardDrive className="w-3.5 h-3.5 text-indigo-400" />
+                <HardDrive className="w-3.5 h-3.5 text-[#1E90FF]" />
                 <span>Evidence storage</span>
               </div>
               <span className="text-[11px] font-semibold text-emerald-400 flex items-center gap-1">
@@ -72,7 +72,7 @@ export function SystemStatus({ onViewAuditLog }: SystemStatusProps) {
 
             <div className="flex items-center justify-between text-xs py-1 border-b border-slate-800/80">
               <div className="flex items-center gap-2 text-slate-300 font-medium">
-                <Database className="w-3.5 h-3.5 text-indigo-400" />
+                <Database className="w-3.5 h-3.5 text-[#1E90FF]" />
                 <span>Local case database</span>
               </div>
               <span className="text-[11px] font-semibold text-emerald-400 flex items-center gap-1">
@@ -82,15 +82,15 @@ export function SystemStatus({ onViewAuditLog }: SystemStatusProps) {
 
             <div className="flex items-center justify-between text-xs py-1 border-b border-slate-800/80">
               <div className="flex items-center gap-2 text-slate-300 font-medium">
-                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                <Sparkles className="w-3.5 h-3.5 text-[#1E90FF]" />
                 <span>Gemini multimodal AI</span>
               </div>
               <span
                 className={`text-[11px] font-semibold flex items-center gap-1 ${
-                  hasApiKey ? "text-emerald-400" : "text-amber-400"
+                  hasApiKey ? "text-[#1E90FF]" : "text-amber-400"
                 }`}
               >
-                ● {hasApiKey ? "Configured" : "Config required"}
+                ● {hasApiKey ? "Active" : "Config required"}
               </span>
             </div>
           </div>
@@ -102,7 +102,7 @@ export function SystemStatus({ onViewAuditLog }: SystemStatusProps) {
         <button
           type="button"
           onClick={onViewAuditLog}
-          className="text-xs font-semibold text-indigo-400 hover:text-indigo-300 transition-colors flex items-center gap-1.5 cursor-pointer"
+          className="text-xs font-semibold text-[#1E90FF] hover:text-[#60A5FA] transition-colors flex items-center gap-1.5 cursor-pointer"
         >
           <span>View operational audit log</span>
           <ArrowRight className="w-3.5 h-3.5" />

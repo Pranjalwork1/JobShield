@@ -39,7 +39,7 @@ export function MessageInput({
           onChange={(e) => onChange(e.target.value)}
           disabled={disabled}
           placeholder={examplePlaceholder}
-          className="w-full px-4 py-3 bg-white/95 border border-slate-200 rounded-2xl text-slate-900 placeholder:text-slate-400 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 shadow-sm transition-all resize-y disabled:opacity-50 disabled:cursor-not-allowed leading-relaxed"
+          className="w-full px-4 py-3 bg-white/95 border border-slate-200 rounded-2xl text-slate-900 placeholder:text-slate-400 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#1E90FF]/25 focus:border-[#1E90FF] shadow-sm transition-all resize-y disabled:opacity-50 disabled:cursor-not-allowed leading-relaxed"
         />
       </div>
       <p className="text-xs text-slate-400">

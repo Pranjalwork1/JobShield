@@ -97,7 +97,7 @@ export function IntakeCardDeck({
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+              <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#1877D2] transition-colors">
                 Offer Letter & Contract
               </h3>
               <p className="text-xs text-slate-500 leading-relaxed">
@@ -107,7 +107,7 @@ export function IntakeCardDeck({
           </div>
 
           <div className="pt-6 flex items-center justify-between text-xs border-t border-slate-100/80 mt-6">
-            <span className="text-slate-400 font-medium flex items-center gap-1 group-hover:text-indigo-600 transition-colors">
+            <span className="text-slate-400 font-medium flex items-center gap-1 group-hover:text-[#1877D2] transition-colors">
               <UploadCloud className="w-3.5 h-3.5" />
               <span>Browse PDF</span>
             </span>
@@ -169,12 +169,12 @@ export function IntakeCardDeck({
         >
             <div className="space-y-4">
               {/* Google Calendar / Globe Icon */}
-              <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform">
-                <Globe className="w-6 h-6 text-blue-500" />
+              <div className="w-12 h-12 rounded-2xl bg-[#EAF4FF] border border-[#B9DCFE] flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform">
+                <Globe className="w-6 h-6 text-[#1E90FF]" />
               </div>
 
               <div className="space-y-2">
-                <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+                <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#1877D2] transition-colors">
                   Job Listing & Domain Context
                 </h3>
                 <p className="text-xs text-slate-500 leading-relaxed">
@@ -184,7 +184,7 @@ export function IntakeCardDeck({
             </div>
 
             <div className="pt-6 flex items-center justify-between text-xs border-t border-slate-100/80 mt-6">
-              <span className="text-slate-400 font-medium flex items-center gap-1 group-hover:text-blue-600 transition-colors">
+              <span className="text-slate-400 font-medium flex items-center gap-1 group-hover:text-[#1877D2] transition-colors">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Add Web Reference</span>
               </span>

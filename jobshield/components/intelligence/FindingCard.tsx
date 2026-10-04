@@ -95,7 +95,7 @@ export function FindingCard({ finding }: FindingCardProps) {
         {/* OBSERVED */}
         <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-1">
           <div className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-500">
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#1E90FF]" />
             <span>Observed in Evidence</span>
           </div>
           <p className="text-xs font-medium text-slate-800 leading-relaxed italic">

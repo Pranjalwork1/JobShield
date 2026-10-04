@@ -23,13 +23,13 @@ export function CaseTimeline({ timeline }: CaseTimelineProps) {
   const renderEventIcon = (type: CaseTimelineEvent["type"]) => {
     switch (type) {
       case "case_created":
-        return <PlusCircle className="w-3.5 h-3.5 text-indigo-600" />;
+        return <PlusCircle className="w-3.5 h-3.5 text-[#1E90FF]" />;
       case "evidence_added":
-        return <FilePlus className="w-3.5 h-3.5 text-blue-600" />;
+        return <FilePlus className="w-3.5 h-3.5 text-[#1877D2]" />;
       case "evidence_removed":
         return <Trash2 className="w-3.5 h-3.5 text-slate-500" />;
       case "analysis_completed":
-        return <FileCheck className="w-3.5 h-3.5 text-cyan-600" />;
+        return <FileCheck className="w-3.5 h-3.5 text-[#1E90FF]" />;
       case "intelligence_generated":
         return <Brain className="w-3.5 h-3.5 text-purple-600" />;
       case "verification_completed":
@@ -57,7 +57,7 @@ export function CaseTimeline({ timeline }: CaseTimelineProps) {
       <div className="flex items-center justify-between px-1">
         <div className="space-y-0.5">
           <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-indigo-600" />
+            <Calendar className="w-4 h-4 text-[#1E90FF]" />
             <span>Case Investigation Timeline ({timeline.length})</span>
           </h3>
           <p className="text-xs text-slate-400">

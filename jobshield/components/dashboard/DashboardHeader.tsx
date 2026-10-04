@@ -143,7 +143,7 @@ export function DashboardHeader({
               onFocus={() => setIsSearchFocused(true)}
               placeholder="Search checks, companies, findings..."
               aria-label="Search job checks, companies, findings"
-              className="w-full pl-9 pr-8 py-2 rounded-2xl bg-white hover:bg-slate-100/60 focus:bg-white text-xs sm:text-sm text-slate-800 placeholder-slate-400 border border-slate-200/90 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all shadow-2xs"
+              className="w-full pl-9 pr-8 py-2 rounded-2xl bg-white hover:bg-[#F4F9FF] focus:bg-white text-xs sm:text-sm text-[#101828] placeholder-slate-400 border border-slate-200/90 focus:border-[#1E90FF] focus:outline-none focus:ring-2 focus:ring-[#1E90FF]/20 transition-all shadow-2xs"
             />
             {searchQuery && (
               <button
@@ -179,17 +179,17 @@ export function DashboardHeader({
                       setIsSearchFocused(false);
                       setSearchQuery("");
                     }}
-                    className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer group"
+                    className="flex items-center justify-between p-2.5 rounded-xl hover:bg-[#F4F9FF] transition-colors cursor-pointer group"
                   >
                     <div className="min-w-0 flex-1">
-                      <div className="text-xs font-bold text-slate-900 group-hover:text-indigo-600 truncate transition-colors">
+                      <div className="text-xs font-bold text-slate-900 group-hover:text-[#1E90FF] truncate transition-colors">
                         {c.title || "Untitled Job Check"}
                       </div>
                       <div className="text-[11px] text-slate-400 truncate">
                         {c.company || "Unspecified Company"}
                       </div>
                     </div>
-                    <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 transition-colors shrink-0" />
+                    <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#1E90FF] transition-colors shrink-0" />
                   </div>
                 ))
               )}
@@ -217,27 +217,27 @@ export function DashboardHeader({
           {/* Notifications Icon Button */}
           <button
             type="button"
-            className="w-9 h-9 rounded-2xl bg-white border border-slate-200/80 hover:bg-slate-50 flex items-center justify-center text-slate-600 shadow-2xs transition-all cursor-pointer shrink-0"
+            className="w-9 h-9 rounded-2xl bg-white border border-slate-200/80 hover:bg-[#F4F9FF] flex items-center justify-center text-slate-600 hover:text-[#1E90FF] shadow-2xs transition-all cursor-pointer shrink-0"
             title="Notifications"
             aria-label="Notifications"
           >
             <Bell className="w-4 h-4" />
           </button>
 
-          {/* + New Job Check Button */}
+          {/* + New Job Check Button (Dodger Blue) */}
           <button
             type="button"
             onClick={onNewCase}
-            className="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-2xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white text-xs sm:text-sm font-bold shadow-md shadow-indigo-600/20 transition-all cursor-pointer shrink-0"
+            className="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-2xl bg-[#1E90FF] hover:bg-[#1877D2] active:bg-[#1565C0] active:scale-95 text-white text-xs sm:text-sm font-bold shadow-md shadow-[#1E90FF]/25 border-none transition-all cursor-pointer shrink-0"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span className="hidden sm:inline">New job check</span>
             <span className="sm:hidden">New Check</span>
           </button>
 
-          {/* User Avatar Badge */}
+          {/* User Avatar Badge (Deep Navy) */}
           <div
-            className="w-9 h-9 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-xs font-bold tracking-tight shadow-xs select-none shrink-0"
+            className="w-9 h-9 rounded-2xl bg-[#101828] text-white flex items-center justify-center text-xs font-bold tracking-tight shadow-xs select-none shrink-0 border border-slate-800"
             title="Current User: Investigator AM"
             aria-label="User profile AM"
           >
@@ -256,7 +256,7 @@ export function DashboardHeader({
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search job checks, companies..."
             aria-label="Search job checks mobile"
-            className="w-full pl-9 pr-8 py-2 rounded-xl bg-white text-xs text-slate-800 placeholder-slate-400 border border-slate-200/90 focus:border-indigo-500 focus:outline-none transition-all shadow-2xs"
+            className="w-full pl-9 pr-8 py-2 rounded-xl bg-white text-xs text-slate-800 placeholder-slate-400 border border-slate-200/90 focus:border-[#1E90FF] focus:outline-none focus:ring-1 focus:ring-[#1E90FF]/30 transition-all shadow-2xs"
           />
           {searchQuery && (
             <button

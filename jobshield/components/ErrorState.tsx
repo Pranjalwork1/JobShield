@@ -32,7 +32,7 @@ export function ErrorState({ error, onRetry, onReset }: ErrorStateProps) {
         <button
           type="button"
           onClick={onRetry}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-950 hover:bg-slate-800 text-white font-semibold text-xs transition-all shadow-md active:scale-95"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#1E90FF] hover:bg-[#1877D2] active:bg-[#1565C0] text-white font-semibold text-xs transition-all shadow-md shadow-[#1E90FF]/25 border-none active:scale-95 cursor-pointer"
         >
           <RefreshCw className="w-3.5 h-3.5" />
           <span>Try Analysis Again</span>

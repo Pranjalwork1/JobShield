@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect } from "react";
 import {
   Sparkles,
   RotateCcw,
-  CheckCircle2,
   AlertTriangle,
   Loader2,
   Square,
@@ -65,12 +64,12 @@ export function NewEraDynamicIsland({
       ref={containerRef}
       className={`relative inline-flex items-center text-xs ${className}`}
     >
-      {/* Top Status Pill Capsule (Height 40px, Dark Navy aesthetic) */}
+      {/* Top Status Pill Capsule (Height 40px, Dodger Blue brand aesthetic) */}
       <div
-        className={`h-10 px-3 sm:px-3.5 py-1.5 rounded-full bg-[#0B0F19] text-white border border-slate-800/90 shadow-sm transition-all duration-200 flex items-center gap-2 sm:gap-2.5 select-none ${
+        className={`h-10 px-3 sm:px-3.5 py-1.5 rounded-full bg-[#EAF4FF] text-[#101828] border border-[#B9DCFE] shadow-xs transition-all duration-200 flex items-center gap-2 sm:gap-2.5 select-none ${
           isAnalyzing
-            ? "ring-1 ring-cyan-400/70 shadow-cyan-500/20"
-            : "hover:border-slate-700"
+            ? "ring-2 ring-[#1E90FF]/50 shadow-[#1E90FF]/20 border-[#1E90FF]"
+            : "hover:border-[#1E90FF]/60 hover:bg-[#E1EFFF]"
         }`}
       >
         {/* Left Status Indicator & Text (Clickable to toggle details HUD) */}
@@ -83,19 +82,15 @@ export function NewEraDynamicIsland({
         >
           {isAnalyzing ? (
             <div className="flex items-center gap-1.5">
-              <Loader2 className="w-3.5 h-3.5 text-cyan-400 animate-spin shrink-0" />
-              <span className="text-[11px] sm:text-xs font-bold text-cyan-300 tracking-tight">
+              <Loader2 className="w-3.5 h-3.5 text-[#1E90FF] animate-spin shrink-0" />
+              <span className="text-[11px] sm:text-xs font-bold text-[#1877D2] tracking-tight">
                 Analyzing...
               </span>
             </div>
           ) : hasResults ? (
             <div className="flex items-center gap-1.5">
-              {riskCount > 0 ? (
-                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shrink-0" />
-              ) : (
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-              )}
-              <span className="text-[11px] sm:text-xs font-bold text-slate-100 tracking-tight">
+              <span className="w-2 h-2 rounded-full bg-[#1E90FF] animate-pulse shrink-0" />
+              <span className="text-[11px] sm:text-xs font-bold text-[#101828] tracking-tight">
                 <span className="hidden sm:inline">
                   {riskCount > 0
                     ? `${riskCount} Risk Indicator${riskCount === 1 ? "" : "s"} Isolated`
@@ -108,8 +103,8 @@ export function NewEraDynamicIsland({
             </div>
           ) : evidenceCount > 0 ? (
             <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shrink-0" />
-              <span className="text-[11px] sm:text-xs font-bold text-slate-100 tracking-tight">
+              <span className="w-2 h-2 rounded-full bg-[#1E90FF] animate-pulse shrink-0" />
+              <span className="text-[11px] sm:text-xs font-bold text-[#101828] tracking-tight">
                 <span className="hidden sm:inline">
                   {evidenceCount} Evidence Item{evidenceCount === 1 ? "" : "s"} Attached
                 </span>
@@ -118,25 +113,25 @@ export function NewEraDynamicIsland({
             </div>
           ) : (
             <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-              <span className="text-[11px] sm:text-xs font-bold text-slate-100 tracking-tight">
+              <span className="w-2 h-2 rounded-full bg-[#1E90FF] animate-pulse shrink-0" />
+              <span className="text-[11px] sm:text-xs font-bold text-[#101828] tracking-tight">
                 JobShield AI
               </span>
-              <span className="text-[10px] text-slate-400 font-normal hidden md:inline">
+              <span className="text-[10px] text-[#667085] font-normal hidden md:inline">
                 • Standby
               </span>
             </div>
           )}
 
           <ChevronDown
-            className={`w-3 h-3 text-slate-400 transition-transform duration-200 shrink-0 ${
+            className={`w-3 h-3 text-[#1877D2] transition-transform duration-200 shrink-0 ${
               isExpanded ? "rotate-180" : ""
             }`}
           />
         </button>
 
         {/* Separator */}
-        <div className="w-px h-3.5 bg-slate-800 shrink-0" />
+        <div className="w-px h-3.5 bg-[#B9DCFE] shrink-0" />
 
         {/* Right Action Controls: Run / Stop / Demo / Reset */}
         <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
@@ -158,7 +153,7 @@ export function NewEraDynamicIsland({
                 <button
                   type="button"
                   onClick={onAnalyze}
-                  className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-bold shadow-xs active:scale-95 transition-all cursor-pointer"
+                  className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#1E90FF] hover:bg-[#1877D2] text-white text-[10px] font-bold shadow-xs active:scale-95 transition-all cursor-pointer"
                   title="Run Gemini multimodal verification"
                 >
                   <Play className="w-2.5 h-2.5 fill-white" />
@@ -169,10 +164,10 @@ export function NewEraDynamicIsland({
               <button
                 type="button"
                 onClick={onLoadDemo}
-                className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/10 hover:bg-white/20 text-slate-200 text-[10px] font-semibold border border-white/10 transition-all active:scale-95 cursor-pointer"
+                className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white hover:bg-[#DDF0FF] text-[#101828] text-[10px] font-semibold border border-[#B9DCFE] transition-all active:scale-95 cursor-pointer shadow-2xs"
                 title="Load sample verification case"
               >
-                <Sparkles className="w-2.5 h-2.5 text-amber-400" />
+                <Sparkles className="w-2.5 h-2.5 text-amber-500" />
                 <span>Demo</span>
               </button>
 
@@ -182,7 +177,7 @@ export function NewEraDynamicIsland({
                   onClick={onReset}
                   title="Reset Case"
                   aria-label="Reset Case"
-                  className="p-1 rounded-full hover:bg-white/15 text-slate-400 hover:text-white transition-colors cursor-pointer"
+                  className="p-1 rounded-full hover:bg-[#DDF0FF] text-[#667085] hover:text-[#101828] transition-colors cursor-pointer"
                 >
                   <RotateCcw className="w-3 h-3" />
                 </button>
@@ -239,7 +234,7 @@ export function NewEraDynamicIsland({
                   el?.scrollIntoView({ behavior: "smooth" });
                 }
               }}
-              className="text-cyan-400 hover:text-cyan-300 font-semibold cursor-pointer"
+              className="text-[#1E90FF] hover:text-[#60A5FA] font-semibold cursor-pointer"
             >
               Go to Intake Deck →
             </button>

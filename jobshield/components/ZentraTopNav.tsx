@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import {
-  ShieldCheck,
   Folder,
   Plus,
   Sparkles,
@@ -11,6 +10,7 @@ import {
   Layers,
   FolderPlus,
 } from "lucide-react";
+import { JobShieldLogo } from "@/components/brand/JobShieldLogo";
 import { JobShieldCase, JobShieldFolder } from "@/types/jobshield";
 import { SYSTEM_ALL_JOBS_ID } from "@/lib/caseStore";
 
@@ -56,20 +56,12 @@ export function ZentraTopNav({
 
   return (
     <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 pt-1">
-      {/* Brand: Logo & Name like "zentra" */}
-      <div className="flex items-center gap-3">
-        <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-500 to-indigo-600 flex items-center justify-center shadow-md shadow-orange-500/20 text-white">
-          <ShieldCheck className="w-5 h-5 stroke-[2.5]" />
-        </div>
-        <div className="flex items-baseline gap-1.5">
-          <span className="text-2xl font-extrabold tracking-tight text-slate-900 lowercase">
-            jobshield
-          </span>
-          <span className="w-1.5 h-1.5 rounded-full bg-indigo-600" />
-        </div>
+      {/* Brand: Reusable JobShield Logo */}
+      <div className="flex items-center">
+        <JobShieldLogo size={34} variant="full" />
       </div>
 
-      {/* Center Segmented Navigation Pills like "Home, Payments, Balances..." in ui final.webp */}
+      {/* Center Segmented Navigation Pills */}
       <nav className="flex items-center gap-1 overflow-x-auto no-scrollbar py-1">
         {[
           { id: "overview", label: "Overview" },
@@ -85,8 +77,8 @@ export function ZentraTopNav({
               onClick={() => onSelectSection(tab.id)}
               className={`px-4 sm:px-5 py-2 rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer shrink-0 ${
                 isActive
-                  ? "bg-[#18181B] text-white shadow-sm shadow-slate-900/10"
-                  : "text-slate-600 hover:text-slate-950 hover:bg-slate-100/60"
+                  ? "bg-[#EAF4FF] text-[#1E90FF] font-bold shadow-xs border border-[#B9DCFE]/70"
+                  : "text-[#667085] hover:text-[#101828] hover:bg-[#F4F9FF]"
               }`}
             >
               {tab.label}
@@ -128,8 +120,8 @@ export function ZentraTopNav({
                     }}
                     className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer ${
                       selectedFolderId === SYSTEM_ALL_JOBS_ID
-                        ? "bg-slate-950 text-white"
-                        : "text-slate-700 hover:bg-slate-100"
+                        ? "bg-[#EAF4FF] text-[#101828] font-bold border border-[#B9DCFE]"
+                        : "text-[#667085] hover:bg-[#F4F9FF]"
                     }`}
                   >
                     <span>All Jobs</span>
@@ -145,8 +137,8 @@ export function ZentraTopNav({
                       }}
                       className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer ${
                         selectedFolderId === f.id
-                          ? "bg-slate-950 text-white"
-                          : "text-slate-700 hover:bg-slate-100"
+                          ? "bg-[#EAF4FF] text-[#101828] font-bold border border-[#B9DCFE]"
+                          : "text-[#667085] hover:bg-[#F4F9FF]"
                       }`}
                     >
                       <span className="truncate">{f.name}</span>
@@ -163,11 +155,11 @@ export function ZentraTopNav({
                         value={newFolderName}
                         onChange={(e) => setNewFolderName(e.target.value)}
                         placeholder="Folder name..."
-                        className="px-2.5 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs w-full focus:outline-none"
+                        className="px-2.5 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs w-full focus:outline-none focus:ring-1 focus:ring-[#1E90FF]/30"
                       />
                       <button
                         type="submit"
-                        className="px-2 py-1 bg-indigo-600 text-white text-[11px] font-bold rounded-lg cursor-pointer"
+                        className="px-2 py-1 bg-[#1E90FF] text-white text-[11px] font-bold rounded-lg cursor-pointer"
                       >
                         Add
                       </button>
@@ -176,7 +168,7 @@ export function ZentraTopNav({
                     <button
                       type="button"
                       onClick={() => setIsAddingFolder(true)}
-                      className="w-full flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-indigo-600 hover:bg-indigo-50 cursor-pointer"
+                      className="w-full flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#1E90FF] hover:bg-[#EAF4FF] cursor-pointer"
                     >
                       <FolderPlus className="w-3.5 h-3.5" />
                       <span>+ New Folder</span>
@@ -203,7 +195,7 @@ export function ZentraTopNav({
         <button
           type="button"
           onClick={onLoadDemo}
-          className="hidden md:flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-all active:scale-95 cursor-pointer"
+          className="hidden md:flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-white hover:bg-[#DDF0FF] text-[#101828] text-xs font-bold border border-[#B9DCFE] transition-all active:scale-95 cursor-pointer shadow-2xs"
         >
           <Sparkles className="w-3.5 h-3.5 text-amber-500" />
           <span>Demo</span>
@@ -212,7 +204,7 @@ export function ZentraTopNav({
         <button
           type="button"
           onClick={onNewCase}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-[#18181B] hover:bg-slate-800 text-white text-xs font-bold shadow-md shadow-slate-950/15 active:scale-95 transition-all cursor-pointer"
+          className="flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-[#1E90FF] hover:bg-[#1877D2] active:bg-[#1565C0] text-white text-xs font-bold shadow-md shadow-[#1E90FF]/25 border-none active:scale-95 transition-all cursor-pointer"
         >
           <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
           <span>New Check</span>

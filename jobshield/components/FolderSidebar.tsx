@@ -43,7 +43,7 @@ export function FolderSidebar({
     <div className="space-y-4">
       <div className="flex items-center justify-between px-2 pt-0.5">
         <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-          <Layers className="w-4 h-4 text-indigo-500 stroke-[2]" />
+          <Layers className="w-4 h-4 text-[#1E90FF] stroke-[2]" />
           <span>CASE LIBRARY</span>
         </h4>
         <button
@@ -87,9 +87,9 @@ export function FolderSidebar({
         <button
           type="button"
           onClick={() => setCreateDialogOpen(true)}
-          className="w-full flex items-center gap-2.5 px-4 py-2.5 rounded-full border border-dashed border-slate-300 text-slate-600 hover:text-indigo-600 hover:border-indigo-300 hover:bg-slate-50/60 transition-all font-semibold text-xs cursor-pointer shadow-2xs"
+          className="w-full flex items-center gap-2.5 px-4 py-2.5 rounded-full border border-dashed border-slate-300 text-[#667085] hover:text-[#1E90FF] hover:border-[#B9DCFE] hover:bg-[#F4F9FF] transition-all font-semibold text-xs cursor-pointer shadow-2xs"
         >
-          <FolderPlus className="w-4 h-4 text-indigo-500 shrink-0" />
+          <FolderPlus className="w-4 h-4 text-[#1E90FF] shrink-0" />
           <span>+ New Folder</span>
         </button>
       </div>

@@ -39,7 +39,7 @@ export function FolderOverview({
               <button
                 type="button"
                 onClick={onCreateFolder}
-                className="text-xs font-semibold px-2.5 py-1 rounded-lg text-indigo-600 hover:bg-indigo-50 transition-colors cursor-pointer"
+                className="text-xs font-semibold px-2.5 py-1 rounded-lg text-[#1E90FF] hover:bg-[#EAF4FF] transition-colors cursor-pointer"
               >
                 + New
               </button>
@@ -61,14 +61,14 @@ export function FolderOverview({
           {/* All Jobs pseudo-folder */}
           <div
             onClick={() => onSelectFolder(SYSTEM_ALL_JOBS_ID)}
-            className="group flex items-center justify-between p-3 rounded-2xl bg-slate-50/70 hover:bg-slate-100/80 border border-slate-100 hover:border-slate-200 transition-all cursor-pointer"
+            className="group flex items-center justify-between p-3 rounded-2xl bg-slate-50/70 hover:bg-[#F4F9FF] border border-slate-100 hover:border-[#B9DCFE] transition-all cursor-pointer"
           >
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-[#EAF4FF] border border-[#B9DCFE] text-[#1E90FF] flex items-center justify-center">
                 <Layers className="w-4 h-4 stroke-[2.2]" />
               </div>
               <div>
-                <div className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                <div className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#1877D2] transition-colors">
                   All Jobs
                 </div>
                 <div className="text-[11px] text-slate-400">
@@ -81,7 +81,7 @@ export function FolderOverview({
               <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-white border border-slate-200 text-slate-700">
                 {totalCases} checks
               </span>
-              <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 transition-colors" />
+              <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#1877D2] transition-colors" />
             </div>
           </div>
 
@@ -90,14 +90,14 @@ export function FolderOverview({
             <div
               key={f.id}
               onClick={() => onSelectFolder(f.id)}
-              className="group flex items-center justify-between p-3 rounded-2xl bg-slate-50/50 hover:bg-slate-100/80 border border-slate-100/80 hover:border-slate-200 transition-all cursor-pointer"
+              className="group flex items-center justify-between p-3 rounded-2xl bg-slate-50/50 hover:bg-[#F4F9FF] border border-slate-100/80 hover:border-[#B9DCFE] transition-all cursor-pointer"
             >
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-xl bg-white border border-slate-200 text-slate-600 flex items-center justify-center group-hover:text-indigo-600 group-hover:border-indigo-200 transition-colors">
+                <div className="w-8 h-8 rounded-xl bg-white border border-slate-200 text-slate-600 flex items-center justify-center group-hover:text-[#1E90FF] group-hover:border-[#B9DCFE] transition-colors">
                   <Folder className="w-4 h-4 stroke-[2]" />
                 </div>
                 <div>
-                  <div className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                  <div className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#1877D2] transition-colors">
                     {f.name}
                   </div>
                   <div className="text-[11px] text-slate-400 flex items-center gap-1.5">

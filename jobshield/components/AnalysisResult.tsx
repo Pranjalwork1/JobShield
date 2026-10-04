@@ -13,11 +13,11 @@ import {
   CheckCircle,
   AlertTriangle,
   RotateCcw,
-  Shield,
   FileCheck,
   SearchCheck,
 } from "lucide-react";
 import { JobShieldAnalysis } from "@/lib/schemas";
+import { JobShieldIcon } from "@/components/brand/JobShieldLogo";
 import { RiskIndicatorCard } from "./RiskIndicatorCard";
 import { VerificationTargetCard } from "./VerificationTargetCard";
 
@@ -61,14 +61,14 @@ export function AnalysisResult({
       {/* Top Banner */}
       <div className="rounded-[36px] bg-white/95 p-6 sm:p-8 border border-white/90 shadow-xl shadow-slate-200/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1.5">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-950 text-white text-xs font-semibold shadow-sm">
-            <Shield className="w-3.5 h-3.5 text-cyan-400" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EAF4FF] text-[#101828] text-xs font-bold border border-[#B9DCFE] shadow-2xs">
+            <JobShieldIcon size={16} />
             <span>JobShield Intelligence Dossier</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#101828] tracking-tight">
             Case Analysis Findings
           </h2>
-          <p className="text-xs sm:text-sm text-slate-500 max-w-xl">
+          <p className="text-xs sm:text-sm text-[#667085] max-w-xl">
             Observable facts, explicit fee demands, and evidence-backed risk indicators isolated across your submitted materials.
           </p>
         </div>
@@ -76,7 +76,7 @@ export function AnalysisResult({
         <button
           type="button"
           onClick={onReset}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-slate-950 hover:bg-slate-800 text-white text-xs font-semibold shadow-md transition-all shrink-0 active:scale-95"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-[#1E90FF] hover:bg-[#1877D2] active:bg-[#1565C0] text-white text-xs font-bold shadow-md shadow-[#1E90FF]/25 border-none transition-all shrink-0 active:scale-95 cursor-pointer"
         >
           <RotateCcw className="w-4 h-4" />
           <span>New Analysis</span>
