@@ -8,6 +8,7 @@ interface RobotMascotProps {
   bubbleText?: string;
   subText?: string;
   className?: string;
+  isAnalyzing?: boolean;
 }
 
 export function RobotMascot({
@@ -15,12 +16,17 @@ export function RobotMascot({
   bubbleText = "Hey there! 👋",
   subText = "Need a verify check?",
   className = "",
+  isAnalyzing = false,
 }: RobotMascotProps) {
   const [bubbleVisible, setBubbleVisible] = useState(false);
 
+  // Automatically collapse speech bubble during active analysis so it never obstructs progress
+  const isBubbleOpen = bubbleVisible && !isAnalyzing;
+
   const handleLauncherClick = () => {
+    if (isAnalyzing) return;
     // If bubble is not visible, toggle it open or perform primary action
-    if (!bubbleVisible) {
+    if (!isBubbleOpen) {
       setBubbleVisible(true);
     } else {
       onClick?.();
@@ -33,7 +39,7 @@ export function RobotMascot({
       aria-label="JobShield AI Companion Assistant"
     >
       {/* Speech Bubble (Expands cleanly ABOVE the launcher, max-w 280px, safe positioning) */}
-      {bubbleVisible && (
+      {isBubbleOpen && (
         <div
           role="dialog"
           aria-label="JobShield Assistant Notification"

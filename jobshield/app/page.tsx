@@ -372,7 +372,7 @@ export default function JobShieldPage() {
 
   // 7. Gemini Multimodal Analysis for Current Case
   const handleAnalyzeCase = async () => {
-    if (!selectedCaseId) return;
+    if (!selectedCaseId || isAnalyzing) return;
 
     const storedCase = await dbGetCaseById(selectedCaseId);
     const targetCase = storedCase || currentCase;
@@ -380,6 +380,9 @@ export default function JobShieldPage() {
 
     const breakdown = getCaseEvidenceBreakdown(targetCase);
     if (breakdown.total === 0) return;
+
+    // Ensure we switch to the case workspace section so the analysis is visible
+    setActiveSection("intake");
 
     const controller = new AbortController();
     abortControllerRef.current = controller;
@@ -734,6 +737,7 @@ export default function JobShieldPage() {
         aria-label="JobShield AI Companion"
       >
         <RobotMascot
+          isAnalyzing={isAnalyzing}
           onClick={() => {
             if (activeSection !== "intake") {
               setActiveSection("intake");

@@ -283,7 +283,8 @@ export function ZentraHeroCard({
                 <button
                   type="button"
                   onClick={onAnalyze}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1E90FF] hover:bg-[#1877D2] active:bg-[#1565C0] text-white text-xs font-bold shadow-md shadow-[#1E90FF]/25 border-none transition-all active:scale-95 cursor-pointer group"
+                  disabled={isAnalyzing}
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1E90FF] hover:bg-[#1877D2] active:bg-[#1565C0] text-white text-xs font-bold shadow-md shadow-[#1E90FF]/25 border-none transition-all active:scale-95 cursor-pointer group disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   <Play className="w-3.5 h-3.5 fill-white" />
                   <span>Analyze with Gemini</span>
