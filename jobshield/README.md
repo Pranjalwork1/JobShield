@@ -11,9 +11,9 @@
 
 ---
 
-## 📸 Interface Preview
+## 📸 Product Overview
 
-![JobShield Interface](../ui%20final.webp)
+![JobShield Operations Dashboard](../overview.png)
 
 JobShield features an elevated glassmorphic aesthetic inspired by modern fintech command centers:
 - **New Era Dynamic Island**: Pinned glassmorphic HUD capsule floating at top-center with live pulse indicators, real-time investigation telemetry, and expandable controls.

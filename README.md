@@ -16,9 +16,9 @@
 
 ---
 
-## Product Preview
+## Product Overview
 
-![JobShield Operations Dashboard](./ui%20final.webp)
+![JobShield Operations Dashboard](./overview.png)
 
 JobShield pairs a modern **Dodger Blue (`#1E90FF`)** visual identity with an evidence-first investigation console:
 - **Operations Dashboard**: Real-time KPI summaries, interactive Recharts Risk Mix donut breakdown, verification progress health bar, and prioritized next actions.
@@ -321,8 +321,7 @@ job_shield/
 ├── README.md                          # Root Project Documentation
 ├── LICENSE                            # MIT License
 ├── vercel.json                        # Vercel deployment configuration
-├── ui final.webp                      # Application screenshot reference
-├── ui.webp                            # Application preview asset
+├── overview.png                       # Application overview screenshot
 ├── jobshield/                         # Next.js Application Root
 │   ├── app/
 │   │   ├── api/
