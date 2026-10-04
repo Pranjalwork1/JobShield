@@ -33,7 +33,6 @@ export function ZentraHeroCard({
   onQuickPrompt,
 }: ZentraHeroCardProps) {
   const [activeChip, setActiveChip] = useState("/offer-authenticity");
-  const [customPrompt, setCustomPrompt] = useState("");
 
   const breakdown = getCaseEvidenceBreakdown(currentCase);
   const riskCount = currentCase.analysis?.risk_indicators?.length ?? 0;

@@ -1,88 +1,126 @@
 "use client";
 
 import React, { useState } from "react";
-import { X } from "lucide-react";
+import { X, Sparkles, ArrowRight } from "lucide-react";
 
 interface RobotMascotProps {
   onClick?: () => void;
   bubbleText?: string;
   subText?: string;
+  className?: string;
 }
 
 export function RobotMascot({
   onClick,
   bubbleText = "Hey there! 👋",
   subText = "Need a verify check?",
+  className = "",
 }: RobotMascotProps) {
-  const [bubbleVisible, setBubbleVisible] = useState(true);
+  const [bubbleVisible, setBubbleVisible] = useState(false);
+
+  const handleLauncherClick = () => {
+    // If bubble is not visible, toggle it open or perform primary action
+    if (!bubbleVisible) {
+      setBubbleVisible(true);
+    } else {
+      onClick?.();
+    }
+  };
 
   return (
     <div
-      onClick={onClick}
-      className="relative flex flex-col items-end select-none group cursor-pointer filter drop-shadow-xl"
-      title="JobShield AI Companion • Click to jump to evidence intake"
+      className={`relative flex flex-col items-end select-none ${className}`}
+      aria-label="JobShield AI Companion Assistant"
     >
-      {/* Speech Bubble */}
+      {/* Speech Bubble (Expands cleanly ABOVE the launcher, max-w 280px, safe positioning) */}
       {bubbleVisible && (
-        <div className="relative mb-2 px-3.5 py-1.5 rounded-2xl bg-white/95 backdrop-blur-md text-slate-800 text-xs font-semibold shadow-lg border border-slate-200/80 flex items-center gap-2 animate-bounce [animation-duration:3s]">
-          <span className="font-bold text-slate-900">{bubbleText}</span>
-          <span className="text-slate-500 font-normal">{subText}</span>
+        <div
+          role="dialog"
+          aria-label="JobShield Assistant Notification"
+          className="absolute bottom-full mb-3 right-0 w-64 sm:w-72 max-w-[calc(100vw-32px)] p-3.5 rounded-2xl bg-white/95 backdrop-blur-md text-slate-800 text-xs font-semibold shadow-xl border border-slate-200/90 animate-in fade-in slide-in-from-bottom-2 duration-200 z-40"
+        >
+          <div className="flex items-start justify-between gap-2 mb-1.5">
+            <div className="flex items-center gap-1.5 text-indigo-600 font-extrabold text-[11px] uppercase tracking-wider">
+              <Sparkles className="w-3 h-3 text-amber-500 fill-amber-400" />
+              <span>JobShield Companion</span>
+            </div>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setBubbleVisible(false);
+              }}
+              aria-label="Dismiss assistant bubble"
+              className="p-1 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          <div className="space-y-1 mb-2.5">
+            <p className="font-bold text-slate-900 text-xs leading-snug">
+              {bubbleText}
+            </p>
+            <p className="text-slate-500 font-normal text-[11px] leading-relaxed">
+              {subText}
+            </p>
+          </div>
+
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={() => {
               setBubbleVisible(false);
+              onClick?.();
             }}
-            className="p-0.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors ml-0.5 cursor-pointer"
-            title="Dismiss"
+            className="w-full flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-xl bg-slate-950 hover:bg-slate-800 text-white text-[11px] font-bold shadow-xs active:scale-95 transition-all cursor-pointer"
           >
-            <X className="w-3 h-3" />
+            <span>Open Evidence Intake</span>
+            <ArrowRight className="w-3 h-3 text-slate-400" />
           </button>
-          {/* Speech bubble arrow pointer pointing down to robot */}
-          <div className="absolute -bottom-1.5 right-10 w-3 h-3 bg-white rotate-45 border-r border-b border-slate-200/80" />
+
+          {/* Speech bubble arrow pointer pointing down to the launcher */}
+          <div className="absolute -bottom-1.5 right-6 w-3 h-3 bg-white rotate-45 border-r border-b border-slate-200/90" />
         </div>
       )}
 
-      {/* Robot Mascot Body & Head with Hover Animation */}
-      <div className="relative w-28 flex flex-col items-center group-hover:-translate-y-1.5 transition-transform duration-300 mr-2">
-        {/* Antenna */}
-        <div className="w-1.5 h-3.5 bg-slate-300 rounded-t-full relative">
-          <div className="absolute -top-1.5 -left-1 w-3.5 h-3.5 rounded-full bg-cyan-400 shadow-md shadow-cyan-400/80 animate-pulse" />
-        </div>
+      {/* Compact Robot Mascot Launcher Button */}
+      <button
+        type="button"
+        onClick={handleLauncherClick}
+        title="JobShield AI Companion • Click to toggle assistant"
+        aria-label="Open JobShield AI Companion"
+        className="relative group p-1.5 rounded-3xl bg-white hover:bg-slate-50 border-2 border-slate-200/90 shadow-xl hover:shadow-2xl transition-all duration-200 cursor-pointer active:scale-95 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+      >
+        {/* Robot Figure (Compact: 56px x 56px footprint, preserving authentic robot aesthetic) */}
+        <div className="w-12 h-12 sm:w-14 sm:h-14 flex flex-col items-center justify-center relative">
+          {/* Antenna */}
+          <div className="w-1 h-2.5 bg-slate-300 rounded-t-full relative -mb-0.5">
+            <div className="absolute -top-1 -left-1 w-3 h-3 rounded-full bg-cyan-400 shadow-sm shadow-cyan-400/80 animate-pulse" />
+          </div>
 
-        {/* Head */}
-        <div className="w-24 h-16 rounded-[24px] bg-gradient-to-b from-white via-slate-50 to-slate-200 border-2 border-slate-200/90 shadow-xl flex items-center justify-center p-2 relative overflow-hidden">
-          {/* Ear pods */}
-          <div className="absolute -left-2 w-3 h-5 rounded-full bg-slate-300" />
-          <div className="absolute -right-2 w-3 h-5 rounded-full bg-slate-300" />
+          {/* Helmet Head */}
+          <div className="w-11 sm:w-12 h-8 rounded-xl bg-gradient-to-b from-white via-slate-50 to-slate-200 border border-slate-200 shadow-sm flex items-center justify-center p-1 relative overflow-hidden">
+            {/* Dark Visor */}
+            <div className="w-full h-full rounded-lg bg-slate-950 flex items-center justify-center gap-2 shadow-inner">
+              {/* Smiling Cyan LED Eyes */}
+              <div className="w-2 h-2 border-t-2 border-l-2 border-r-0 border-b-0 border-cyan-400 rounded-t-full -rotate-45 shadow-2xs shadow-cyan-400 animate-pulse" />
+              <div className="w-2 h-2 border-t-2 border-r-2 border-l-0 border-b-0 border-cyan-400 rounded-t-full rotate-45 shadow-2xs shadow-cyan-400 animate-pulse" />
+            </div>
+          </div>
 
-          {/* Dark Glass Visor */}
-          <div className="w-full h-full rounded-[18px] bg-slate-950 flex items-center justify-center gap-3.5 shadow-inner">
-            {/* Smiling Cyan LED Eyes */}
-            <div className="w-3 h-3 border-t-2 border-l-2 border-r-0 border-b-0 border-cyan-400 rounded-t-full -rotate-45 shadow-sm shadow-cyan-400 animate-pulse" />
-            <div className="w-3 h-3 border-t-2 border-r-2 border-l-0 border-b-0 border-cyan-400 rounded-t-full rotate-45 shadow-sm shadow-cyan-400 animate-pulse" />
+          {/* Hover Torso Base */}
+          <div className="w-8 h-2.5 bg-gradient-to-b from-slate-100 to-slate-200 border border-slate-200 rounded-b-lg shadow-2xs -mt-0.5 flex items-center justify-center">
+            <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-xs shadow-cyan-400 animate-ping" />
           </div>
         </div>
 
-        {/* Neck / Collar */}
-        <div className="w-12 h-2 bg-slate-300 rounded-full -mt-0.5 z-10" />
-
-        {/* Robot Torso / Hover Base */}
-        <div className="w-16 h-8 bg-gradient-to-b from-white via-slate-50 to-slate-200 border-2 border-slate-200 rounded-b-[20px] shadow-md -mt-1 flex items-center justify-center relative overflow-hidden z-0">
-          <div className="w-5 h-5 rounded-full bg-cyan-400/15 border border-cyan-400/50 flex items-center justify-center">
-            <div className="w-2 h-2 rounded-full bg-cyan-400 shadow-sm shadow-cyan-400 animate-ping" />
-          </div>
-        </div>
-
-        {/* Robot Hands */}
-        <div className="w-full flex justify-between px-3 -mt-6 z-20 pointer-events-none">
-          <div className="w-4 h-4 bg-white border border-slate-200 rounded-full shadow-sm" />
-          <div className="w-4 h-4 bg-white border border-slate-200 rounded-full shadow-sm" />
-        </div>
-
-        {/* Hovering Ambient Shadow */}
-        <div className="w-14 h-2 rounded-full bg-slate-400/25 blur-[2px] mt-1.5 animate-pulse" />
-      </div>
+        {/* Status notification dot if bubble is available */}
+        {!bubbleVisible && (
+          <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-indigo-600 border-2 border-white flex items-center justify-center shadow-xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-300 animate-pulse" />
+          </span>
+        )}
+      </button>
     </div>
   );
 }

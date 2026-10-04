@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "npx tsx scripts/verify-p3-engine.mjs && npx tsx scripts/verify-dashboard-metrics.mjs"
+    "test": "npx tsx scripts/verify-p3-engine.mjs && npx tsx scripts/verify-dashboard-metrics.mjs && node scripts/verify-layout-stabilization.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.27.0",

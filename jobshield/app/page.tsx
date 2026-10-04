@@ -18,7 +18,6 @@ import {
 } from "@/lib/caseStore";
 import { analyzeJobShieldIntelligence } from "@/lib/intelligence";
 import { calculateDashboardMetrics } from "@/lib/dashboardMetrics";
-import { NewEraDynamicIsland } from "@/components/NewEraDynamicIsland";
 import { CaseWorkspace } from "@/components/CaseWorkspace";
 import { RobotMascot } from "@/components/RobotMascot";
 import { CreateCaseDialog } from "@/components/CreateCaseDialog";
@@ -531,7 +530,7 @@ export default function JobShieldPage() {
 
   if (!isLoaded) {
     return (
-      <div className="min-h-screen bg-[#e5e8ee] flex items-center justify-center">
+      <div className="min-h-[100dvh] bg-[#e5e8ee] flex items-center justify-center">
         <div className="flex flex-col items-center gap-3 text-slate-500">
           <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
           <span className="text-xs font-semibold tracking-wide">Loading JobShield Investigation Workspace...</span>
@@ -556,60 +555,56 @@ export default function JobShieldPage() {
   };
 
   return (
-    <div className="min-h-screen relative flex flex-col justify-between selection:bg-indigo-500/20 selection:text-indigo-900 pb-12 bg-[#e5e8ee]">
-      {/* Top Floating Glassmorphic New Era Dynamic Island */}
-      <NewEraDynamicIsland
-        currentCase={currentCase}
-        evidenceCount={currentEvidenceCount}
-        isAnalyzing={isAnalyzing}
-        onAnalyze={handleAnalyzeCase}
-        onStopAnalysis={handleStopAnalysis}
-        onLoadDemo={handleLoadDemoCase}
-        onReset={handleResetCurrentCase}
-      />
-
+    <div className="min-h-[100dvh] w-full flex flex-col justify-start selection:bg-indigo-500/20 selection:text-indigo-900 bg-[#e5e8ee] overflow-x-hidden p-3 sm:p-5 lg:p-6">
       {/* Main Elevated Application Canvas with Left Sidebar & Top Header */}
-      <div className="w-full max-w-[1520px] mx-auto px-2 sm:px-4 lg:px-6 pt-16 sm:pt-20">
-        <div className="rounded-[36px] sm:rounded-[44px] min-h-[92vh] flex flex-row relative bg-white border border-slate-200/80 shadow-2xl shadow-slate-300/30 overflow-hidden">
-          {/* Left Application Sidebar */}
-          <AppSidebar
-            activeSection={activeSection}
-            onSelectSection={setActiveSection}
-            folders={folders}
-            selectedFolderId={selectedFolderId}
-            onSelectFolder={(id) => {
-              setSelectedFolderId(id);
-              const folderCases =
-                id === SYSTEM_ALL_JOBS_ID
-                  ? cases
-                  : cases.filter((c) => c.folderId === id);
-              if (folderCases.length > 0) {
-                setSelectedCaseId(folderCases[0].id);
-              }
+      <div className="w-full max-w-[1480px] mx-auto min-h-[calc(100dvh-24px)] sm:min-h-[calc(100dvh-48px)] flex flex-row relative bg-white border border-slate-200/80 shadow-2xl shadow-slate-300/30 rounded-[28px] sm:rounded-[36px] overflow-hidden">
+        {/* Left Application Sidebar */}
+        <AppSidebar
+          activeSection={activeSection}
+          onSelectSection={setActiveSection}
+          folders={folders}
+          selectedFolderId={selectedFolderId}
+          onSelectFolder={(id) => {
+            setSelectedFolderId(id);
+            const folderCases =
+              id === SYSTEM_ALL_JOBS_ID
+                ? cases
+                : cases.filter((c) => c.folderId === id);
+            if (folderCases.length > 0) {
+              setSelectedCaseId(folderCases[0].id);
+            }
+            setActiveSection("intake");
+          }}
+          onCreateFolder={() => setIsCreateFolderOpen(true)}
+          onNewCase={() => setIsCreateCaseOpen(true)}
+          isMobileOpen={isMobileSidebarOpen}
+          onCloseMobile={() => setIsMobileSidebarOpen(false)}
+          folderCaseCounts={folderCaseCounts}
+          totalCasesCount={cases.length}
+        />
+
+        {/* Right Main Content Area */}
+        <div className="flex-1 flex flex-col min-w-0 p-4 sm:p-5 lg:p-7 pb-24 sm:pb-28 bg-slate-50/40">
+          {/* Top Header with Integrated In-Flow Status Pill */}
+          <DashboardHeader
+            title={getSectionTitle()}
+            activeChecksCount={dashboardMetrics.activeChecks}
+            cases={cases}
+            onSelectCase={(id) => {
+              setSelectedCaseId(id);
               setActiveSection("intake");
             }}
-            onCreateFolder={() => setIsCreateFolderOpen(true)}
             onNewCase={() => setIsCreateCaseOpen(true)}
-            isMobileOpen={isMobileSidebarOpen}
-            onCloseMobile={() => setIsMobileSidebarOpen(false)}
-            folderCaseCounts={folderCaseCounts}
-            totalCasesCount={cases.length}
+            onOpenMobileMenu={() => setIsMobileSidebarOpen(true)}
+            currentCase={currentCase}
+            evidenceCount={currentEvidenceCount}
+            isAnalyzing={isAnalyzing}
+            onAnalyze={handleAnalyzeCase}
+            onStopAnalysis={handleStopAnalysis}
+            onLoadDemo={handleLoadDemoCase}
+            onReset={handleResetCurrentCase}
+            onNavigateToIntake={() => setActiveSection("intake")}
           />
-
-          {/* Right Main Content Area */}
-          <div className="flex-1 flex flex-col min-w-0 p-4 sm:p-6 lg:p-8 bg-slate-50/40">
-            {/* Top Header */}
-            <DashboardHeader
-              title={getSectionTitle()}
-              activeChecksCount={dashboardMetrics.activeChecks}
-              cases={cases}
-              onSelectCase={(id) => {
-                setSelectedCaseId(id);
-                setActiveSection("intake");
-              }}
-              onNewCase={() => setIsCreateCaseOpen(true)}
-              onOpenMobileMenu={() => setIsMobileSidebarOpen(true)}
-            />
 
             {/* View Switching */}
             <main className="flex-1 w-full mt-2">
@@ -730,12 +725,12 @@ export default function JobShieldPage() {
             </main>
           </div>
         </div>
-      </div>
 
-      {/* Fixed Sticky Robot Mascot at bottom-right of the viewport */}
+      {/* Fixed Sticky Robot Mascot at safe bottom-right offset of viewport */}
       <aside
-        className="fixed bottom-6 right-6 z-40 flex flex-col items-end pointer-events-auto"
-        aria-label="JobShield AI Assistant"
+        className="fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-30 flex flex-col items-end pointer-events-auto"
+        style={{ "--assistant-safe-bottom": "88px" } as React.CSSProperties}
+        aria-label="JobShield AI Companion"
       >
         <RobotMascot
           onClick={() => {
