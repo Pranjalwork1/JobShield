@@ -17,8 +17,8 @@ import {
   DEFAULT_MY_JOBS_ID,
 } from "@/lib/caseStore";
 import { analyzeJobShieldIntelligence } from "@/lib/intelligence";
+import { calculateDashboardMetrics } from "@/lib/dashboardMetrics";
 import { NewEraDynamicIsland } from "@/components/NewEraDynamicIsland";
-import { ZentraTopNav } from "@/components/ZentraTopNav";
 import { CaseWorkspace } from "@/components/CaseWorkspace";
 import { RobotMascot } from "@/components/RobotMascot";
 import { CreateCaseDialog } from "@/components/CreateCaseDialog";
@@ -30,12 +30,21 @@ import { DEMO_CASE_MESSAGE, DEMO_CASE_URL } from "@/lib/demoData";
 import { FolderPlus, Plus, ShieldCheck, Loader2 } from "lucide-react";
 import { getCaseEvidenceBreakdown } from "@/components/EvidenceSummary";
 
+// JobShield Operations Dashboard Components
+import { AppSidebar } from "@/components/dashboard/AppSidebar";
+import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
+import { OverviewDashboard } from "@/components/dashboard/OverviewDashboard";
+import { RiskDossierView } from "@/components/dashboard/RiskDossierView";
+import { VerificationView } from "@/components/dashboard/VerificationView";
+
 export default function JobShieldPage() {
   const [folders, setFolders] = useState<JobShieldFolder[]>([]);
   const [cases, setCases] = useState<JobShieldCase[]>([]);
   const [selectedFolderId, setSelectedFolderId] = useState<string>(SYSTEM_ALL_JOBS_ID);
   const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<string>("overview");
+  const [dossierSeverityFilter, setDossierSeverityFilter] = useState<"all" | "high" | "medium" | "low">("all");
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisError, setAnalysisError] = useState<string | null>(null);
@@ -114,7 +123,7 @@ export default function JobShieldPage() {
     }
   }, [selectedCaseId]);
 
-  // 2. Identify Current Case
+  // 2. Identify Current Case and Folder
   const currentCase = useMemo(() => {
     if (!selectedCaseId) return null;
     return cases.find((c) => c.id === selectedCaseId) || null;
@@ -126,10 +135,23 @@ export default function JobShieldPage() {
     return map;
   }, [folders]);
 
+  const folderCaseCounts = useMemo(() => {
+    const map = new Map<string, number>();
+    cases.forEach((c) => {
+      map.set(c.folderId, (map.get(c.folderId) || 0) + 1);
+    });
+    return map;
+  }, [cases]);
+
   // Current evidence count across files + message + url using unified formula
   const currentEvidenceCount = useMemo(() => {
     return getCaseEvidenceBreakdown(currentCase).total;
   }, [currentCase]);
+
+  // Derived Dashboard Metrics from real stored cases
+  const dashboardMetrics = useMemo(() => {
+    return calculateDashboardMetrics(cases, folders);
+  }, [cases, folders]);
 
   // 3. Folder Operations
   const handleCreateFolder = async (name: string) => {
@@ -148,6 +170,7 @@ export default function JobShieldPage() {
     setCases((prev) => [newCase, ...prev]);
     setSelectedCaseId(newCase.id);
     setSelectedFolderId(newCase.folderId);
+    setActiveSection("intake");
   };
 
   const handleUpdateCase = async (updates: Partial<JobShieldCase>) => {
@@ -206,7 +229,40 @@ export default function JobShieldPage() {
     setCaseToDelete(null);
   };
 
-  // 5. 1-Click Demo Case Loader
+  // 5. Cross-Case Verification Target Toggle
+  const handleToggleVerificationTarget = async (caseId: string, targetId: string) => {
+    const targetCase = cases.find((c) => c.id === caseId);
+    if (!targetCase) return;
+
+    const currentList = targetCase.completedVerificationTargets || [];
+    let updatedList: string[];
+    let actionDesc = "";
+
+    if (currentList.includes(targetId)) {
+      updatedList = currentList.filter((t) => t !== targetId);
+      actionDesc = `Verification target marked open: ${targetId}`;
+    } else {
+      updatedList = [...currentList, targetId];
+      actionDesc = `Verification target completed: ${targetId}`;
+    }
+
+    const updatedTimeline = [
+      ...(targetCase.timeline || []),
+      createTimelineEvent("verification_completed", actionDesc),
+    ];
+
+    const updatedCase: JobShieldCase = {
+      ...targetCase,
+      completedVerificationTargets: updatedList,
+      timeline: updatedTimeline,
+      updatedAt: new Date().toISOString(),
+    };
+
+    setCases((prev) => prev.map((c) => (c.id === caseId ? updatedCase : c)));
+    await dbSaveCase(updatedCase);
+  };
+
+  // 6. 1-Click Demo Case Loader
   const handleLoadDemoCase = async () => {
     try {
       // Fetch sample files from public/samples
@@ -242,7 +298,7 @@ export default function JobShieldPage() {
       ];
 
       if (currentCase) {
-        // Populate the currently open case with demo assets (Section 14)
+        // Populate the currently open case with demo assets
         const updatedCase: JobShieldCase = {
           ...currentCase,
           title: "Software Developer",
@@ -263,6 +319,7 @@ export default function JobShieldPage() {
 
         setCases((prev) => prev.map((c) => (c.id === updatedCase.id ? updatedCase : c)));
         await dbSaveCase(updatedCase);
+        setActiveSection("intake");
       } else {
         // If no case is selected or exists, create a brand-new demo case
         const targetFolder =
@@ -284,6 +341,7 @@ export default function JobShieldPage() {
         await dbSaveCase(newDemoCase);
         setCases((prev) => [newDemoCase, ...prev]);
         setSelectedCaseId(newDemoCase.id);
+        setActiveSection("intake");
       }
     } catch (err) {
       console.warn("Could not load local demo files, setting text fallback:", err);
@@ -292,6 +350,7 @@ export default function JobShieldPage() {
           recruiterMessage: DEMO_CASE_MESSAGE,
           jobUrl: DEMO_CASE_URL,
         });
+        setActiveSection("intake");
       }
     }
   };
@@ -311,11 +370,10 @@ export default function JobShieldPage() {
     }
   };
 
-  // 6. Gemini Multimodal Analysis for Current Case (Requirement 19, 39, 40)
+  // 7. Gemini Multimodal Analysis for Current Case
   const handleAnalyzeCase = async () => {
     if (!selectedCaseId) return;
 
-    // Load exact case and hydrated files from IndexedDB (Section 19)
     const storedCase = await dbGetCaseById(selectedCaseId);
     const targetCase = storedCase || currentCase;
     if (!targetCase) return;
@@ -323,20 +381,17 @@ export default function JobShieldPage() {
     const breakdown = getCaseEvidenceBreakdown(targetCase);
     if (breakdown.total === 0) return;
 
-    // Initialize AbortController for cancel capability
     const controller = new AbortController();
     abortControllerRef.current = controller;
 
     setIsAnalyzing(true);
     setAnalysisError(null);
 
-    // Set case status to "analyzing"
     await handleUpdateCase({ status: "analyzing" });
 
     try {
       const formData = new FormData();
 
-      // Only send evidence from the currently selected case
       targetCase.evidence.forEach((item: Evidence) => {
         if (item.file) {
           formData.append("files", item.file);
@@ -369,7 +424,7 @@ export default function JobShieldPage() {
       const analysis: JobShieldAnalysis = data.analysis;
       let intelligence = data.intelligence;
 
-      // Fallback: if server-side intelligence was null, generate it locally
+      // Fallback: local intelligence derivation if server returned null
       if (!intelligence) {
         try {
           intelligence = analyzeJobShieldIntelligence(targetCase, analysis);
@@ -378,13 +433,11 @@ export default function JobShieldPage() {
         }
       }
 
-      // Status logic: if verification targets exist and need review -> "needs_verification", else "analyzed"
       const hasVerificationTargets =
         (intelligence?.verificationTargets?.length ?? 0) > 0 ||
         (analysis.verification_targets?.length ?? 0) > 0;
       const nextStatus = hasVerificationTargets ? "needs_verification" : "analyzed";
 
-      // Auto-extract title and company following Section 21
       const derivedTitle =
         analysis.case_summary?.job_title || targetCase.title || null;
       const derivedCompany =
@@ -424,7 +477,6 @@ export default function JobShieldPage() {
           ? err.message
           : "An unexpected error occurred connecting to JobShield. Please try again.";
       setAnalysisError(message);
-      // Revert status to draft on failure
       await handleUpdateCase({ status: "draft" });
     } finally {
       abortControllerRef.current = null;
@@ -432,7 +484,7 @@ export default function JobShieldPage() {
     }
   };
 
-  // 7. Retry Intelligence (Requirement 89: Rerun deterministic P3 without calling Gemini)
+  // 8. Retry Intelligence (Rerun deterministic P3 without calling Gemini)
   const handleRetryIntelligence = async () => {
     if (!selectedCaseId) return;
     const storedCase = await dbGetCaseById(selectedCaseId);
@@ -488,6 +540,21 @@ export default function JobShieldPage() {
     );
   }
 
+  const getSectionTitle = () => {
+    switch (activeSection) {
+      case "overview":
+        return "Overview";
+      case "intake":
+        return "Evidence Deck";
+      case "dossier":
+        return "Risk Dossier";
+      case "verification":
+        return "Verification";
+      default:
+        return "Overview";
+    }
+  };
+
   return (
     <div className="min-h-screen relative flex flex-col justify-between selection:bg-indigo-500/20 selection:text-indigo-900 pb-12 bg-[#e5e8ee]">
       {/* Top Floating Glassmorphic New Era Dynamic Island */}
@@ -501,12 +568,13 @@ export default function JobShieldPage() {
         onReset={handleResetCurrentCase}
       />
 
-      {/* Main Elevated Application Canvas matching ui final.webp */}
-      <div className="w-full max-w-[1440px] mx-auto px-3 sm:px-6 pt-16 sm:pt-20">
-        <div className="rounded-[36px] sm:rounded-[44px] p-4 sm:p-7 lg:p-9 min-h-[92vh] flex flex-col justify-between relative bg-white border border-slate-200/80 shadow-2xl shadow-slate-300/30">
-          {/* Top Brand & Segmented Nav */}
-          <ZentraTopNav
-            currentCase={currentCase}
+      {/* Main Elevated Application Canvas with Left Sidebar & Top Header */}
+      <div className="w-full max-w-[1520px] mx-auto px-2 sm:px-4 lg:px-6 pt-16 sm:pt-20">
+        <div className="rounded-[36px] sm:rounded-[44px] min-h-[92vh] flex flex-row relative bg-white border border-slate-200/80 shadow-2xl shadow-slate-300/30 overflow-hidden">
+          {/* Left Application Sidebar */}
+          <AppSidebar
+            activeSection={activeSection}
+            onSelectSection={setActiveSection}
             folders={folders}
             selectedFolderId={selectedFolderId}
             onSelectFolder={(id) => {
@@ -518,93 +586,170 @@ export default function JobShieldPage() {
               if (folderCases.length > 0) {
                 setSelectedCaseId(folderCases[0].id);
               }
+              setActiveSection("intake");
             }}
+            onCreateFolder={() => setIsCreateFolderOpen(true)}
             onNewCase={() => setIsCreateCaseOpen(true)}
-            onCreateFolder={handleCreateFolder}
-            onLoadDemo={handleLoadDemoCase}
-            activeSection={activeSection}
-            onSelectSection={(sec) => {
-              setActiveSection(sec);
-              const target = document.getElementById(`section-${sec}`);
-              if (target) {
-                target.scrollIntoView({ behavior: "smooth", block: "start" });
-              }
-            }}
+            isMobileOpen={isMobileSidebarOpen}
+            onCloseMobile={() => setIsMobileSidebarOpen(false)}
+            folderCaseCounts={folderCaseCounts}
+            totalCasesCount={cases.length}
           />
 
-          {/* Full-width Workspace Canvas */}
-          <main className="flex-1 w-full mb-4">
-            <section className="w-full">
-              {currentCase ? (
-                <CaseWorkspace
-                  currentCase={currentCase}
-                  folderName={folderNameMap.get(currentCase.folderId) || "My Jobs"}
-                  onUpdateCase={handleUpdateCase}
-                  onAnalyze={handleAnalyzeCase}
-                  onRetryIntelligence={handleRetryIntelligence}
-                  isAnalyzing={isAnalyzing}
-                  onStopAnalysis={handleStopAnalysis}
-                  error={analysisError}
-                  onClearError={() => setAnalysisError(null)}
-                  onMove={() => setCaseToMove(currentCase)}
-                  onRename={() => setCaseToRename(currentCase)}
-                  onDelete={() => setCaseToDelete(currentCase)}
+          {/* Right Main Content Area */}
+          <div className="flex-1 flex flex-col min-w-0 p-4 sm:p-6 lg:p-8 bg-slate-50/40">
+            {/* Top Header */}
+            <DashboardHeader
+              title={getSectionTitle()}
+              activeChecksCount={dashboardMetrics.activeChecks}
+              cases={cases}
+              onSelectCase={(id) => {
+                setSelectedCaseId(id);
+                setActiveSection("intake");
+              }}
+              onNewCase={() => setIsCreateCaseOpen(true)}
+              onOpenMobileMenu={() => setIsMobileSidebarOpen(true)}
+            />
+
+            {/* View Switching */}
+            <main className="flex-1 w-full mt-2">
+              {/* 1. Overview Screen: JobShield Operations Dashboard */}
+              {activeSection === "overview" && (
+                <OverviewDashboard
+                  metrics={dashboardMetrics}
+                  folderName={
+                    selectedFolderId === SYSTEM_ALL_JOBS_ID
+                      ? "All Jobs"
+                      : folderNameMap.get(selectedFolderId) || "Workspace"
+                  }
+                  onSelectCase={(id) => {
+                    setSelectedCaseId(id);
+                    setActiveSection("intake");
+                  }}
+                  onSelectFolder={(id) => {
+                    setSelectedFolderId(id);
+                    const folderCases =
+                      id === SYSTEM_ALL_JOBS_ID
+                        ? cases
+                        : cases.filter((c) => c.folderId === id);
+                    if (folderCases.length > 0) {
+                      setSelectedCaseId(folderCases[0].id);
+                    }
+                    setActiveSection("intake");
+                  }}
+                  onNewCase={() => setIsCreateCaseOpen(true)}
+                  onCreateFolder={() => setIsCreateFolderOpen(true)}
+                  onNavigateSection={setActiveSection}
+                  onFilterSeverity={(sev) => {
+                    setDossierSeverityFilter(sev);
+                    setActiveSection("dossier");
+                  }}
                   onLoadDemo={handleLoadDemoCase}
                 />
-              ) : (
-                /* Empty State (Requirement 30) */
-                <div className="p-8 sm:p-14 rounded-[36px] bg-white/80 border border-slate-200/80 shadow-sm text-center space-y-6 max-w-xl mx-auto my-12 animate-in fade-in duration-300">
-                  <div className="w-16 h-16 rounded-3xl bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center mx-auto shadow-sm">
-                    <ShieldCheck className="w-8 h-8" />
-                  </div>
-
-                  <div className="space-y-2">
-                    <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-                      Your JobShield workspace is empty
-                    </h2>
-                    <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto leading-relaxed">
-                      Create a folder to organize your job investigations, or start your first job check to intake recruitment evidence and run Gemini multimodal analysis.
-                    </p>
-                  </div>
-
-                  <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-                    <button
-                      type="button"
-                      onClick={() => setIsCreateFolderOpen(true)}
-                      className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all cursor-pointer"
-                    >
-                      <FolderPlus className="w-4 h-4 text-indigo-600" />
-                      <span>+ Create Folder</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setIsCreateCaseOpen(true)}
-                      className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-slate-950 hover:bg-slate-800 text-white text-xs font-bold shadow-md transition-all active:scale-95 cursor-pointer"
-                    >
-                      <Plus className="w-4 h-4" />
-                      <span>+ New Job Check</span>
-                    </button>
-                  </div>
-                </div>
               )}
-            </section>
-          </main>
+
+              {/* 2. Evidence Deck: Full Case Workspace with Intake, P2, P3 */}
+              {activeSection === "intake" && (
+                <section className="w-full">
+                  {currentCase ? (
+                    <CaseWorkspace
+                      currentCase={currentCase}
+                      folderName={folderNameMap.get(currentCase.folderId) || "My Jobs"}
+                      onUpdateCase={handleUpdateCase}
+                      onAnalyze={handleAnalyzeCase}
+                      onRetryIntelligence={handleRetryIntelligence}
+                      isAnalyzing={isAnalyzing}
+                      onStopAnalysis={handleStopAnalysis}
+                      error={analysisError}
+                      onClearError={() => setAnalysisError(null)}
+                      onMove={() => setCaseToMove(currentCase)}
+                      onRename={() => setCaseToRename(currentCase)}
+                      onDelete={() => setCaseToDelete(currentCase)}
+                      onLoadDemo={handleLoadDemoCase}
+                    />
+                  ) : (
+                    <div className="p-8 sm:p-14 rounded-[36px] bg-white border border-slate-200/80 shadow-xs text-center space-y-6 max-w-xl mx-auto my-12 animate-in fade-in duration-300">
+                      <div className="w-16 h-16 rounded-3xl bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center mx-auto shadow-sm">
+                        <ShieldCheck className="w-8 h-8" />
+                      </div>
+
+                      <div className="space-y-2">
+                        <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+                          No active job check selected
+                        </h2>
+                        <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto leading-relaxed">
+                          Select an existing check from the Overview dashboard, or create a new job check to upload offer letters and recruiter messages.
+                        </p>
+                      </div>
+
+                      <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                        <button
+                          type="button"
+                          onClick={() => setIsCreateFolderOpen(true)}
+                          className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all cursor-pointer"
+                        >
+                          <FolderPlus className="w-4 h-4 text-indigo-600" />
+                          <span>+ Create Folder</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setIsCreateCaseOpen(true)}
+                          className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-slate-950 hover:bg-slate-800 text-white text-xs font-bold shadow-md transition-all active:scale-95 cursor-pointer"
+                        >
+                          <Plus className="w-4 h-4" />
+                          <span>+ New Job Check</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </section>
+              )}
+
+              {/* 3. Risk Dossier View */}
+              {activeSection === "dossier" && (
+                <RiskDossierView
+                  cases={cases}
+                  selectedCaseId={selectedCaseId}
+                  onSelectCase={setSelectedCaseId}
+                  initialSeverityFilter={dossierSeverityFilter}
+                  onClearFilter={() => setDossierSeverityFilter("all")}
+                  onNavigateSection={setActiveSection}
+                />
+              )}
+
+              {/* 4. Verification Queue View */}
+              {activeSection === "verification" && (
+                <VerificationView
+                  cases={cases}
+                  selectedCaseId={selectedCaseId}
+                  onSelectCase={setSelectedCaseId}
+                  onToggleTarget={handleToggleVerificationTarget}
+                  onNavigateSection={setActiveSection}
+                />
+              )}
+            </main>
+          </div>
         </div>
       </div>
 
-      {/* Fixed Sticky Robot Mascot at bottom-right of the viewport (remains stuck on scroll) */}
+      {/* Fixed Sticky Robot Mascot at bottom-right of the viewport */}
       <aside
         className="fixed bottom-6 right-6 z-40 flex flex-col items-end pointer-events-auto"
         aria-label="JobShield AI Assistant"
       >
         <RobotMascot
           onClick={() => {
-            const el =
-              document.getElementById("evidence-cards-deck") ||
-              document.querySelector("textarea");
-            el?.scrollIntoView({ behavior: "smooth" });
-            const textarea = document.querySelector("textarea");
-            textarea?.focus();
+            if (activeSection !== "intake") {
+              setActiveSection("intake");
+            }
+            setTimeout(() => {
+              const el =
+                document.getElementById("evidence-cards-deck") ||
+                document.querySelector("textarea");
+              el?.scrollIntoView({ behavior: "smooth" });
+              const textarea = document.querySelector("textarea");
+              textarea?.focus();
+            }, 100);
           }}
           bubbleText="Hey there! 👋"
           subText="Need a verify check?"

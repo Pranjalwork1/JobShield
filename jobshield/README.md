@@ -209,5 +209,63 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
+## 📊 Operations Dashboard
+
+The **JobShield Operations Dashboard** serves as the primary command center for recruitment fraud defense and investigation workflows. Inspired by high-trust security operations centers, it synthesizes empirical verification telemetry across all active dossiers.
+
+```
+                         JOBSHIELD OPERATIONS DASHBOARD
+ ┌─────────────────────────────────────────────────────────────────────────────┐
+ │ Sidebar          │ Dashboard / Workspace                                    │
+ │                  │                                                           │
+ │ JobShield AI     │ Overview                                                  │
+ │                  │ ├── Dynamic Greeting & Workspace Health Telemetry         │
+ │ Overview         │ ├── 4 Metric KPI Cards (Checks, Analyzed, Findings, Open) │
+ │ Evidence Deck    │ ├── Live Recent Job Checks (Interactive Table/Cards)      │
+ │ Risk Dossier     │ ├── Verification Health Ring  +  Risk Mix Donut Chart     │
+ │ Verification     │ ├── Folder Allocation         +  Prioritized Next Actions │
+ │                  │ └── Recent Audit Activity     +  Operational Status       │
+ │ FOLDERS          │                                                           │
+ │ ├── All Jobs     │                                                           │
+ │ └── User Folders │                                                           │
+ └─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Dashboard Core Components:
+1. **Overview Header & Dynamic Greeting**:
+   - Dynamic day indicator (e.g., `MONDAY OVERVIEW`) and contextual greeting based on local time.
+   - Empirical situation assessment computed in real-time from active case states (e.g., *"3 checks need attention before hiring review"* or *"Your workspace is clear — no open verification items"*).
+   - Current date range pill and active folder badge.
+2. **Deterministic KPI Cards**:
+   - **Active Checks**: Real count of active cases stored in browser IndexedDB.
+   - **Analyzed Cases**: Total cases with completed multimodal analysis.
+   - **Risk Findings**: Aggregated count of deterministic P3 findings across active investigations.
+   - **Open Verification Targets**: Actionable corroboration tasks remaining open.
+3. **Recent Job Checks**:
+   - Displays live status across the active verification queue with role, company, finding summary, workflow status (`Draft`, `Analyzing`, `Analyzed`, `Needs Verification`), and relative timestamps.
+   - Clicking any row navigates directly to the exact case workspace with complete evidence and analysis isolation.
+4. **Risk Mix (Interactive Donut Chart)**:
+   - Rendered using **Recharts** with accessible tooltips, custom center total badge, and dynamic semantic coloring (High: Red, Medium: Amber, Low: Blue).
+   - **Empirical Grounding**: The Risk Mix chart strictly reflects **P3 evidence-backed finding severity** and is **NOT** a synthetic scam probability score or fraud verdict.
+   - Clicking any segment filters the Risk Dossier directly to that severity class.
+5. **Verification Health & Completion Rate**:
+   - Visual progress ring displaying empirical resolution percentage: `(completed / total) * 100`.
+   - Clear empty states when no verification targets have been generated yet.
+6. **Folders Overview**:
+   - Real-time case distribution and risk finding breakdown per user folder.
+   - Direct navigation to folder-filtered views.
+7. **Prioritized Next Actions**:
+   - Dynamically compiled from unresolved contradictions and open verification targets across active dossiers.
+   - Prioritized by severity (`High` > `Medium` > `Low`) with one-click direct jump buttons.
+8. **Recent Activity & Tamper-Evident Audit Trail**:
+   - Chronological event timeline recording case creation, evidence uploads, analysis runs, intelligence generation, and verification milestones.
+9. **Operational System Status**:
+   - Trust control monitoring displaying the live operational status of IndexedDB storage, case persistence, audit logging, and server-side Gemini configuration.
+
+> **Privacy & Performance Guarantee**: All dashboard metrics are calculated strictly client-side from local IndexedDB case metadata. Binary evidence blobs are never hydrated to calculate dashboard metrics, ensuring instantaneous render speeds without network overhead.
+
+---
+
 ## 📄 License
 This project is licensed under the [MIT License](LICENSE).
+

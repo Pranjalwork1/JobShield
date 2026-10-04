@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "npx tsx scripts/verify-p3-engine.mjs"
+    "test": "npx tsx scripts/verify-p3-engine.mjs && npx tsx scripts/verify-dashboard-metrics.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.27.0",
@@ -16,6 +16,7 @@
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "react-dropzone": "^20.1.2",
+    "recharts": "^3.10.1",
     "zod": "^4.6.5"
   },
   "devDependencies": {
