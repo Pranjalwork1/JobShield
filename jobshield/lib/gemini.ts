@@ -21,9 +21,13 @@ export function getGeminiClient(): GoogleGenAI {
 
 /**
  * Returns the configured Gemini model name from GEMINI_MODEL,
- * defaulting to a stable fast multimodal model ("gemini-2.5-flash").
+ * defaulting to the supported multimodal model ("gemini-3.8-flash").
+ * Automatically replaces retired model identifiers (e.g., gemini-2.5-flash) with gemini-3.8-flash.
  */
 export function getGeminiModel(): string {
   const model = process.env.GEMINI_MODEL?.trim();
+  if (model === "gemini-2.5-flash") {
+    return "gemini-3.8-flash";
+  }
   return model || "gemini-3.8-flash";
 }

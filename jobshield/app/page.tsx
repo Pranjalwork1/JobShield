@@ -415,12 +415,66 @@ export default function JobShieldPage() {
         signal: controller.signal,
       });
 
-      const data = await res.json();
+      // 1. Read response body exactly once as text
+      const rawText = await res.text();
+      const contentType = res.headers.get("content-type") || "";
 
+      // 2. Parse body as JSON inside guarded try/catch
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let data: any = null;
+      if (rawText && rawText.trim().length > 0) {
+        try {
+          data = JSON.parse(rawText);
+        } catch {
+          data = null;
+        }
+      }
+
+      // 3. Handle non-JSON responses (HTML error pages, timeouts, gateway failures)
+      if (!data) {
+        let failureMessage: string;
+        if (res.status === 504 || rawText.includes("FUNCTION_INVOCATION_TIMEOUT")) {
+          failureMessage =
+            "The analysis request timed out on the server. Multimodal document processing took longer than the serverless execution limit. Please try analyzing with fewer files or shorter text.";
+        } else if (res.status === 413 || rawText.includes("Request Entity Too Large")) {
+          failureMessage =
+            "The uploaded evidence exceeds the maximum payload size supported by the server. Please reduce the file size and try again.";
+        } else if (res.status === 429) {
+          failureMessage =
+            "JobShield's analysis service is currently experiencing high demand or rate limits. Please wait a moment and try again.";
+        } else if (res.status === 502 || res.status === 503) {
+          failureMessage =
+            "The AI analysis engine is temporarily unavailable. Please try analyzing again in a few moments.";
+        } else if (res.status === 404) {
+          failureMessage =
+            "JobShield's analysis endpoint was not found (404). Please verify that the application is properly deployed.";
+        } else {
+          failureMessage =
+            "JobShield's analysis service returned an unexpected response. Please check the service status and try again.";
+        }
+
+        if (process.env.NODE_ENV !== "production") {
+          console.error("[JobShield] Non-JSON API response received:", {
+            status: res.status,
+            contentType,
+            snippet: rawText.slice(0, 160),
+          });
+        }
+        throw new Error(failureMessage);
+      }
+
+      // 4. Handle JSON responses reporting failure
       if (!res.ok || !data.success) {
         throw new Error(
           data.error ||
             "JobShield couldn't complete the analysis. Your evidence has not been classified as safe or unsafe. Please try again."
+        );
+      }
+
+      // 5. Validate that successful response contains expected analysis data before updating case state
+      if (!data.analysis || typeof data.analysis !== "object") {
+        throw new Error(
+          "JobShield received an incomplete analysis response from the server. Please try analyzing again."
         );
       }
 
