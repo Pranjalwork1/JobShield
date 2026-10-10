@@ -247,9 +247,9 @@ export async function POST(req: NextRequest) {
     let response: any = null;
     let usedModel = model;
 
-    // Timeouts to prevent Vercel 60s gateway timeouts
-    const MAX_TOTAL_BUDGET_MS = 26000;
-    const PER_MODEL_TIMEOUT_MS = 14000;
+    // Timeouts to prevent Vercel 60s gateway timeouts while accommodating multimodal document processing
+    const MAX_TOTAL_BUDGET_MS = 52000;
+    const PER_MODEL_TIMEOUT_MS = 25000;
 
     for (let i = 0; i < candidateModels.length; i++) {
       const elapsed = Date.now() - requestStartTime;
