@@ -27,9 +27,9 @@ export function KpiCards({ metrics, onNavigateSection }: KpiCardsProps) {
             ? "No cases in workspace"
             : `${metrics.activeChecks} total active case${metrics.activeChecks > 1 ? "s" : ""}`
         }
-        badge="Current total"
+        badge="CURRENT TOTAL"
         icon={Layers}
-        variant="indigo"
+        variant="blue"
         onClick={() => onNavigateSection?.("intake")}
       />
 
@@ -39,10 +39,10 @@ export function KpiCards({ metrics, onNavigateSection }: KpiCardsProps) {
         value={metrics.analyzedCases}
         subtitle={
           metrics.activeChecks === 0
-            ? "0% completion"
+            ? "0% completed"
             : `${analyzedPercent}% completed`
         }
-        badge={metrics.analyzedCases > 0 ? "Gemini verified" : "Pending"}
+        badge={metrics.analyzedCases > 0 ? "ANALYZED" : "PENDING"}
         icon={CheckCircle2}
         variant="emerald"
         onClick={() => onNavigateSection?.("dossier")}
@@ -57,7 +57,7 @@ export function KpiCards({ metrics, onNavigateSection }: KpiCardsProps) {
             ? "No findings observed"
             : `${metrics.riskMix.high} high priority`
         }
-        badge={metrics.riskMix.high > 0 ? "Review needed" : "Evidence backed"}
+        badge={metrics.riskMix.high > 0 ? "REVIEW NEEDED" : "REVIEW NEEDED"}
         icon={ShieldAlert}
         variant="rose"
         onClick={() => onNavigateSection?.("dossier")}
@@ -74,8 +74,8 @@ export function KpiCards({ metrics, onNavigateSection }: KpiCardsProps) {
         }
         badge={
           metrics.openVerificationTargets > 0
-            ? `${metrics.openVerificationTargets} open`
-            : "All clear"
+            ? `${metrics.openVerificationTargets} OPEN`
+            : "ALL CLEAR"
         }
         icon={ListChecks}
         variant="amber"

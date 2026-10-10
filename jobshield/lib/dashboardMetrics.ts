@@ -1,5 +1,5 @@
 import { JobShieldCase, JobShieldFolder } from "@/types/jobshield";
-import { formatRelativeTime } from "@/lib/time";
+import { formatRelativeTime, formatAppliedDate } from "@/lib/time";
 
 export interface RiskMixData {
   high: number;
@@ -19,6 +19,11 @@ export interface RecentJobCheckItem {
   rawStatus: string;
   updated: string;
   updatedAt: string;
+  appliedDate?: string;
+  highFindingsCount?: number;
+  mediumFindingsCount?: number;
+  lowFindingsCount?: number;
+  totalFindingsCount?: number;
 }
 
 export interface DashboardNextAction {
@@ -219,22 +224,29 @@ export function calculateDashboardMetrics(
     let risk: RecentJobCheckItem["risk"] = "No findings";
     let riskSeverity: RecentJobCheckItem["riskSeverity"] = "none";
 
+    let caseHighCount = 0;
+    let caseMediumCount = 0;
+    let caseLowCount = 0;
+    const caseTotalFindings = c.intelligence?.findings?.length || 0;
+
     if (!c.analysis) {
       risk = "Pending";
       riskSeverity = "pending";
     } else {
       const findings = c.intelligence?.findings || [];
-      const hasHigh = findings.some((f) => f.severity === "high");
-      const hasMedium = findings.some((f) => f.severity === "medium");
-      const hasLow = findings.some((f) => f.severity === "low");
+      findings.forEach((f) => {
+        if (f.severity === "high") caseHighCount++;
+        else if (f.severity === "medium") caseMediumCount++;
+        else if (f.severity === "low") caseLowCount++;
+      });
 
-      if (hasHigh) {
+      if (caseHighCount > 0) {
         risk = "High";
         riskSeverity = "high";
-      } else if (hasMedium) {
+      } else if (caseMediumCount > 0) {
         risk = "Medium";
         riskSeverity = "medium";
-      } else if (hasLow) {
+      } else if (caseLowCount > 0) {
         risk = "Low";
         riskSeverity = "low";
       } else {
@@ -263,6 +275,11 @@ export function calculateDashboardMetrics(
       rawStatus: c.status,
       updated: formatRelativeTime(c.updatedAt),
       updatedAt: c.updatedAt,
+      appliedDate: formatAppliedDate(c.createdAt || c.updatedAt),
+      highFindingsCount: caseHighCount,
+      mediumFindingsCount: caseMediumCount,
+      lowFindingsCount: caseLowCount,
+      totalFindingsCount: caseTotalFindings,
     };
   });
 

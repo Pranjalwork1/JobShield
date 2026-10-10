@@ -42,33 +42,46 @@ export function OverviewDashboard({
 
   return (
     <div className="space-y-6 pb-6 animate-in fade-in duration-300">
-      {/* 1. Top Greeting / Overview Card */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-7 rounded-[26px] bg-gradient-to-r from-slate-50 via-indigo-50/20 to-white border border-slate-200/80 shadow-xs">
-        <div className="space-y-1">
+      {/* 1. Top Greeting / Overview Card (Pure White with Subtle Border) */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-[22px] bg-white border border-slate-200/80 shadow-xs">
+        <div className="space-y-1.5">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-extrabold uppercase tracking-widest text-indigo-600">
+            <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#1E90FF]">
               {dayLabel}
             </span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-black text-[#10264C] tracking-tight">
             {greeting}, Investigator
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 font-medium pt-0.5">
-            {metrics.dynamicHeadline}{" "}
-            <span className="text-slate-400 font-normal">
-              {metrics.dynamicSubtitle}
-            </span>
+            {metrics.openVerificationTargets > 0 || metrics.riskMix.high > 0 ? (
+              <>
+                <span className="font-semibold text-slate-700">
+                  {metrics.openVerificationTargets} verification target{metrics.openVerificationTargets === 1 ? "" : "s"} need attention.
+                </span>{" "}
+                <span className="text-slate-400 font-normal">
+                  {metrics.riskMix.high} high priority finding{metrics.riskMix.high === 1 ? "" : "s"} detected across your active checks.
+                </span>
+              </>
+            ) : (
+              <>
+                {metrics.dynamicHeadline}{" "}
+                <span className="text-slate-400 font-normal">
+                  {metrics.dynamicSubtitle}
+                </span>
+              </>
+            )}
           </p>
         </div>
 
         {/* Right date / workspace badge */}
         <div className="flex items-center gap-2.5 self-start sm:self-auto">
-          <div className="px-3.5 py-2 rounded-2xl bg-white border border-slate-200/80 shadow-2xs text-right">
-            <div className="text-xs font-bold text-slate-800">
+          <div className="px-4 py-2.5 rounded-2xl bg-[#F5F7FB] border border-slate-200/80 shadow-2xs text-right">
+            <div className="text-xs font-bold text-[#10264C]">
               {folderName}
             </div>
-            <div className="text-[11px] font-medium text-slate-400 flex items-center gap-1 justify-end mt-0.5">
-              <Calendar className="w-3 h-3 text-indigo-500" />
+            <div className="text-[11px] font-medium text-slate-400 flex items-center gap-1.5 justify-end mt-0.5">
+              <Calendar className="w-3.5 h-3.5 text-[#1E90FF]" />
               <span>{dateRangeLabel}</span>
             </div>
           </div>
@@ -86,6 +99,8 @@ export function OverviewDashboard({
         recentCases={metrics.recentCases}
         onSelectCase={onSelectCase}
         onViewAll={() => onNavigateSection("intake")}
+        onNewCase={onNewCase}
+        onLoadDemo={onLoadDemo}
       />
 
       {/* 4. Verification Health (2/3) + Risk Mix Donut Chart (1/3) */}

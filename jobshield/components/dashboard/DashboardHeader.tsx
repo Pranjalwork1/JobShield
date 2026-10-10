@@ -22,6 +22,8 @@ interface DashboardHeaderProps {
   onReset?: () => void;
   modelName?: string;
   onNavigateToIntake?: () => void;
+  onNavigateToVerification?: () => void;
+  openVerificationTargets?: number;
 }
 
 export function DashboardHeader({
@@ -40,10 +42,14 @@ export function DashboardHeader({
   onReset = () => {},
   modelName = "Gemini Flash 3.8",
   onNavigateToIntake,
+  onNavigateToVerification,
+  openVerificationTargets = 0,
 }: DashboardHeaderProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
+  const notificationRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown on click outside
   useEffect(() => {
@@ -53,6 +59,12 @@ export function DashboardHeader({
         !searchContainerRef.current.contains(e.target as Node)
       ) {
         setIsSearchFocused(false);
+      }
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(e.target as Node)
+      ) {
+        setIsNotificationsOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -115,12 +127,12 @@ export function DashboardHeader({
             </button>
           )}
           <div className="flex items-center gap-2">
-            <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-black text-[#10264C] tracking-tight">
               {title}
             </h1>
             {activeChecksCount > 0 && (
               <span
-                className="hidden lg:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200"
+                className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#EAF4FF] text-[#1E90FF] border border-[#B9DCFE]"
                 title={`${activeChecksCount} active checks in workspace`}
               >
                 {activeChecksCount}
@@ -141,9 +153,9 @@ export function DashboardHeader({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={() => setIsSearchFocused(true)}
-              placeholder="Search checks, companies, findings..."
-              aria-label="Search job checks, companies, findings"
-              className="w-full pl-9 pr-8 py-2 rounded-2xl bg-white hover:bg-[#F4F9FF] focus:bg-white text-xs sm:text-sm text-[#101828] placeholder-slate-400 border border-slate-200/90 focus:border-[#1E90FF] focus:outline-none focus:ring-2 focus:ring-[#1E90FF]/20 transition-all shadow-2xs"
+              placeholder="Search checks, contacts..."
+              aria-label="Search job checks, companies, contacts"
+              className="w-full pl-9 pr-8 py-2 rounded-2xl bg-white hover:bg-[#F4F9FF] focus:bg-white text-xs sm:text-sm text-[#10264C] placeholder-slate-400 border border-slate-200/90 focus:border-[#1E90FF] focus:outline-none focus:ring-2 focus:ring-[#1E90FF]/20 transition-all shadow-2xs"
             />
             {searchQuery && (
               <button
@@ -168,7 +180,7 @@ export function DashboardHeader({
 
               {searchResults.length === 0 ? (
                 <div className="p-4 text-center text-xs text-slate-400">
-                  No matching checks or findings found for &quot;{searchQuery}&quot;
+                  No matching checks or contacts found for &quot;{searchQuery}&quot;
                 </div>
               ) : (
                 searchResults.map((c) => (
@@ -182,7 +194,7 @@ export function DashboardHeader({
                     className="flex items-center justify-between p-2.5 rounded-xl hover:bg-[#F4F9FF] transition-colors cursor-pointer group"
                   >
                     <div className="min-w-0 flex-1">
-                      <div className="text-xs font-bold text-slate-900 group-hover:text-[#1E90FF] truncate transition-colors">
+                      <div className="text-xs font-bold text-[#10264C] group-hover:text-[#1E90FF] truncate transition-colors">
                         {c.title || "Untitled Job Check"}
                       </div>
                       <div className="text-[11px] text-slate-400 truncate">
@@ -215,14 +227,54 @@ export function DashboardHeader({
           </div>
 
           {/* Notifications Icon Button */}
-          <button
-            type="button"
-            className="w-9 h-9 rounded-2xl bg-white border border-slate-200/80 hover:bg-[#F4F9FF] flex items-center justify-center text-slate-600 hover:text-[#1E90FF] shadow-2xs transition-all cursor-pointer shrink-0"
-            title="Notifications"
-            aria-label="Notifications"
-          >
-            <Bell className="w-4 h-4" />
-          </button>
+          <div className="relative" ref={notificationRef}>
+            <button
+              type="button"
+              onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+              className="relative w-9 h-9 rounded-2xl bg-white border border-slate-200/80 hover:bg-[#F4F9FF] flex items-center justify-center text-slate-600 hover:text-[#1E90FF] shadow-2xs transition-all cursor-pointer shrink-0"
+              title="Notifications & Tasks"
+              aria-label="Notifications"
+            >
+              <Bell className="w-4 h-4" />
+              {openVerificationTargets > 0 && (
+                <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#1E90FF]" />
+              )}
+            </button>
+
+            {isNotificationsOpen && (
+              <div className="absolute top-11 right-0 w-72 sm:w-80 rounded-2xl bg-white border border-slate-200 shadow-2xl p-3.5 z-50 animate-in fade-in zoom-in-95 space-y-2">
+                <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                  <span className="text-xs font-bold text-[#10264C]">Verification Tasks</span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EAF4FF] text-[#1E90FF]">
+                    {openVerificationTargets} open
+                  </span>
+                </div>
+                {openVerificationTargets > 0 ? (
+                  <div className="space-y-2 pt-1">
+                    <p className="text-xs text-slate-600">
+                      You have {openVerificationTargets} open verification target(s) requiring evidence validation.
+                    </p>
+                    {onNavigateToVerification && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsNotificationsOpen(false);
+                          onNavigateToVerification();
+                        }}
+                        className="w-full text-center py-2 px-3 rounded-xl bg-[#EAF4FF] hover:bg-[#DDF0FF] text-xs font-bold text-[#1E90FF] transition-colors cursor-pointer"
+                      >
+                        View Verification Queue →
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <p className="text-xs text-slate-500 py-3 text-center">
+                    All verification items completed!
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
 
           {/* + New Job Check Button (Dodger Blue) */}
           <button
@@ -237,7 +289,7 @@ export function DashboardHeader({
 
           {/* User Avatar Badge (Deep Navy) */}
           <div
-            className="w-9 h-9 rounded-2xl bg-[#101828] text-white flex items-center justify-center text-xs font-bold tracking-tight shadow-xs select-none shrink-0 border border-slate-800"
+            className="w-9 h-9 rounded-2xl bg-[#10264C] text-white flex items-center justify-center text-xs font-bold tracking-tight shadow-xs select-none shrink-0 border border-slate-800"
             title="Current User: Investigator AM"
             aria-label="User profile AM"
           >

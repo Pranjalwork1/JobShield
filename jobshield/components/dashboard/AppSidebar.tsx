@@ -3,11 +3,9 @@
 import React from "react";
 import {
   LayoutDashboard,
-  Files,
   ShieldAlert,
   BadgeCheck,
   Folder,
-  FolderPlus,
   Plus,
   X,
   Layers,
@@ -24,11 +22,14 @@ interface AppSidebarProps {
   selectedFolderId: string;
   onSelectFolder: (folderId: string) => void;
   onCreateFolder?: () => void;
-  onNewCase: () => void;
+  onNewCase?: () => void;
   isMobileOpen?: boolean;
   onCloseMobile?: () => void;
   folderCaseCounts?: Map<string, number>;
   totalCasesCount?: number;
+  verificationCompletionRate?: number | null;
+  openVerificationTargets?: number;
+  totalVerificationTargets?: number;
 }
 
 export function AppSidebar({
@@ -43,6 +44,9 @@ export function AppSidebar({
   onCloseMobile,
   folderCaseCounts = new Map(),
   totalCasesCount = 0,
+  verificationCompletionRate = null,
+  openVerificationTargets = 0,
+  totalVerificationTargets = 0,
 }: AppSidebarProps) {
   const navItems = [
     {
@@ -53,7 +57,7 @@ export function AppSidebar({
     {
       id: "intake",
       label: "Evidence Deck",
-      icon: Files,
+      icon: Layers,
     },
     {
       id: "dossier",
@@ -67,21 +71,25 @@ export function AppSidebar({
     },
   ];
 
+  const planProgress = verificationCompletionRate ?? (totalVerificationTargets === 0 ? 0 : 0);
+
   const sidebarContent = (
-    <aside className="w-full h-full flex flex-col justify-between py-6 px-4 select-none">
-      {/* Top Section: Brand + Main Nav */}
+    <aside className="w-full h-full flex flex-col justify-between py-6 px-4 select-none bg-white">
+      {/* Top Section: Brand + Main Nav + Folders */}
       <div className="space-y-6">
         {/* Brand header */}
-        <div className="flex items-center justify-between px-2">
-          <div className="flex items-center">
-            <JobShieldLogo size={34} variant="full" />
+        <div className="px-2">
+          <div className="flex items-center gap-2.5">
+            <JobShieldLogo size={32} variant="full" />
           </div>
 
-          {/* AI active status badge (Dodger Blue branding) */}
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#EAF4FF] text-[#1877D2] border border-[#B9DCFE]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#1E90FF] animate-pulse" />
-            AI active
-          </span>
+          {/* Truthful application status indicator below brand */}
+          <div className="flex items-center gap-1.5 mt-2 pl-0.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+              ANALYSIS READY
+            </span>
+          </div>
         </div>
 
         {/* Primary Navigation Items */}
@@ -100,10 +108,10 @@ export function AppSidebar({
                 className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
                   isActive
                     ? "bg-[#EAF4FF] text-[#1E90FF] font-bold shadow-xs border border-[#B9DCFE]/70"
-                    : "text-[#667085] hover:text-[#101828] hover:bg-[#F4F9FF]"
+                    : "text-slate-600 hover:text-[#10264C] hover:bg-[#F5F7FB]"
                 }`}
               >
-                <Icon className={`w-4 h-4 stroke-[2.2] ${isActive ? "text-[#1E90FF]" : "text-[#667085]"}`} />
+                <Icon className={`w-4 h-4 stroke-[2.2] ${isActive ? "text-[#1E90FF]" : "text-slate-500"}`} />
                 <span>{item.label}</span>
               </button>
             );
@@ -112,16 +120,17 @@ export function AppSidebar({
 
         {/* Folders Section */}
         <div className="pt-2">
-          <div className="flex items-center justify-between px-3 pb-2 text-[10px] font-bold text-[#667085] uppercase tracking-wider">
-            <span>Folders</span>
+          <div className="flex items-center justify-between px-3 pb-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+            <span>FOLDERS</span>
             {onCreateFolder && (
               <button
                 type="button"
                 onClick={onCreateFolder}
-                className="hover:text-[#1E90FF] transition-colors p-0.5 cursor-pointer"
-                title="Create folder"
+                className="hover:text-[#1E90FF] text-slate-400 transition-colors p-0.5 cursor-pointer"
+                title="Add folder"
+                aria-label="Add folder"
               >
-                <FolderPlus className="w-3.5 h-3.5" />
+                <Plus className="w-3.5 h-3.5" />
               </button>
             )}
           </div>
@@ -136,20 +145,20 @@ export function AppSidebar({
               }}
               className={`w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                 selectedFolderId === SYSTEM_ALL_JOBS_ID
-                  ? "bg-[#EAF4FF] text-[#101828] font-bold border border-[#B9DCFE]"
-                  : "text-[#667085] hover:text-[#101828] hover:bg-[#F4F9FF]"
+                  ? "bg-[#EAF4FF] text-[#10264C] font-bold border border-[#B9DCFE]"
+                  : "text-slate-600 hover:text-[#10264C] hover:bg-[#F5F7FB]"
               }`}
             >
               <div className="flex items-center gap-2.5 truncate">
-                <Layers className={`w-3.5 h-3.5 shrink-0 ${selectedFolderId === SYSTEM_ALL_JOBS_ID ? "text-[#1E90FF]" : "text-[#667085]"}`} />
+                <Folder className={`w-3.5 h-3.5 shrink-0 ${selectedFolderId === SYSTEM_ALL_JOBS_ID ? "text-[#1E90FF]" : "text-slate-400"}`} />
                 <span className="truncate">All Jobs</span>
               </div>
-              <span className="text-[11px] font-mono text-[#667085]">
+              <span className="text-[11px] font-mono text-slate-400">
                 {totalCasesCount}
               </span>
             </button>
 
-            {/* User Created Folders */}
+            {/* Folders list */}
             {folders.map((f) => {
               const isSelected = selectedFolderId === f.id;
               const count = folderCaseCounts.get(f.id) || 0;
@@ -163,15 +172,15 @@ export function AppSidebar({
                   }}
                   className={`w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                     isSelected
-                      ? "bg-[#EAF4FF] text-[#101828] font-bold border border-[#B9DCFE]"
-                      : "text-[#667085] hover:text-[#101828] hover:bg-[#F4F9FF]"
+                      ? "bg-[#EAF4FF] text-[#10264C] font-bold border border-[#B9DCFE]"
+                      : "text-slate-600 hover:text-[#10264C] hover:bg-[#F5F7FB]"
                   }`}
                 >
                   <div className="flex items-center gap-2.5 truncate">
-                    <Folder className={`w-3.5 h-3.5 shrink-0 ${isSelected ? "text-[#1E90FF]" : "text-[#667085]"}`} />
+                    <Folder className={`w-3.5 h-3.5 shrink-0 ${isSelected ? "text-[#1E90FF]" : "text-slate-400"}`} />
                     <span className="truncate">{f.name}</span>
                   </div>
-                  <span className="text-[11px] font-mono text-[#667085]">
+                  <span className="text-[11px] font-mono text-slate-400">
                     {count}
                   </span>
                 </button>
@@ -181,21 +190,56 @@ export function AppSidebar({
         </div>
       </div>
 
-      {/* Bottom Section: + New Job Check Button (Dodger Blue Primary) */}
-      <div className="pt-4 border-t border-slate-100 space-y-2">
-        <button
-          type="button"
-          onClick={() => {
-            onNewCase();
-            onCloseMobile?.();
-          }}
-          className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-[#1E90FF] hover:bg-[#1877D2] active:bg-[#1565C0] active:scale-95 text-white text-xs sm:text-sm font-bold shadow-md shadow-[#1E90FF]/25 transition-all cursor-pointer border-none"
-        >
-          <Plus className="w-4 h-4 stroke-[2.5]" />
-          <span>New Job Check</span>
-        </button>
+      {/* Bottom Section: Investigation Plan Card */}
+      <div className="pt-4 border-t border-slate-100 space-y-3">
+        {onNewCase && (
+          <button
+            type="button"
+            onClick={() => {
+              onNewCase();
+              onCloseMobile?.();
+            }}
+            className="w-full md:hidden flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-[#1E90FF] hover:bg-[#1877D2] text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
+          >
+            <Plus className="w-4 h-4 stroke-[2.5]" />
+            <span>+ New Job Check</span>
+          </button>
+        )}
 
-        <div className="px-2 text-center text-[10px] text-[#667085]">
+        <div className="p-3.5 rounded-2xl bg-[#F5F7FB] border border-slate-200/80 space-y-2.5">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-[#10264C]">Investigation Plan</span>
+            {totalVerificationTargets > 0 && (
+              <span className="text-[10px] font-bold text-[#1E90FF]">{planProgress}%</span>
+            )}
+          </div>
+
+          {/* Progress bar */}
+          <div className="w-full h-1.5 rounded-full bg-slate-200 overflow-hidden">
+            <div
+              className="h-full bg-[#1E90FF] rounded-full transition-all duration-300"
+              style={{ width: `${totalVerificationTargets > 0 ? planProgress : 0}%` }}
+            />
+          </div>
+
+          <div className="flex items-center justify-between pt-0.5">
+            <button
+              type="button"
+              onClick={() => {
+                onSelectSection("verification");
+                onCloseMobile?.();
+              }}
+              className="px-3 py-1 rounded-lg bg-white border border-slate-200 text-[11px] font-semibold text-slate-700 hover:text-[#1E90FF] hover:border-[#B9DCFE] transition-colors cursor-pointer shadow-2xs"
+            >
+              View details
+            </button>
+            <span className="text-[10px] text-slate-400">
+              {openVerificationTargets} open
+            </span>
+          </div>
+        </div>
+
+        <div className="px-2 text-center text-[10px] text-slate-400">
           JobShield Operations v4.2
         </div>
       </div>
@@ -204,8 +248,8 @@ export function AppSidebar({
 
   return (
     <>
-      {/* Desktop Sidebar (Permanent, width 250px) */}
-      <div className="hidden md:block w-60 shrink-0 bg-white/70 border-r border-slate-200/80 rounded-l-[36px] sm:rounded-l-[44px]">
+      {/* Desktop Sidebar (Permanent, width 240px) */}
+      <div className="hidden md:block w-60 shrink-0 bg-white border-r border-slate-200/80">
         {sidebarContent}
       </div>
 
@@ -225,6 +269,7 @@ export function AppSidebar({
                 type="button"
                 onClick={onCloseMobile}
                 className="p-1.5 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
+                aria-label="Close menu"
               >
                 <X className="w-5 h-5" />
               </button>

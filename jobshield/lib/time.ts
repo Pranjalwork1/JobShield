@@ -83,3 +83,10 @@ export function getGreetingDayLabel(): { dayLabel: string; greeting: string } {
 
   return { dayLabel, greeting };
 }
+
+export function formatAppliedDate(dateInput: string | number | Date | null | undefined): string {
+  if (!dateInput) return "Recently";
+  const date = typeof dateInput === "string" || typeof dateInput === "number" ? new Date(dateInput) : dateInput;
+  if (isNaN(date.getTime())) return "Recently";
+  return date.toLocaleDateString("en-US", { month: "short", day: "2-digit" });
+}
